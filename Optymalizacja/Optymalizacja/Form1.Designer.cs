@@ -65,6 +65,8 @@
         #endregion
 
         private System.Windows.Forms.Button button1;
+
+        public int HEAD { get; private set; }
     }
 }
 
