@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+<<<<<<< HEAD
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -41,12 +42,20 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+=======
+            this.SuspendLayout();
+            // 
+>>>>>>> fa84dd39b6100a25301fb580be9d1b4026a9aa7a
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+<<<<<<< HEAD
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Controls.Add(this.button1);
+=======
+            this.ClientSize = new System.Drawing.Size(837, 659);
+>>>>>>> fa84dd39b6100a25301fb580be9d1b4026a9aa7a
             this.Name = "Form1";
             this.Text = "Form1";
             this.ResumeLayout(false);
