@@ -19,7 +19,7 @@ namespace Optymalizacja
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button1.Text = "Kliknięty";
+            label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
         }
     }
 }

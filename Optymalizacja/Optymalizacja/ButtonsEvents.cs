@@ -8,7 +8,10 @@ namespace Optymalizacja
 {
     partial class Form1
     {
-        // tutaj bedziemy wrzucac funkcje zwiazane z obsluga zdarzen na przyciskach
+        double rownanieTestowe(double x1, double x2)
+        {
+            return x1*x1 - x2*x2;
+        }
 
 
     }
