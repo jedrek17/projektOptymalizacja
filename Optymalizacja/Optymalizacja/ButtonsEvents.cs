@@ -16,6 +16,7 @@ namespace Optymalizacja
         }
     }
 
+//cPoint-------------------------------------------------------------------------------------
 
     class cPoint
     {
@@ -27,12 +28,15 @@ namespace Optymalizacja
             wsp = new double[n];
         }
 
+
+
         public void liczP() //oblicza wartość funkcji w punkcie
         {
             y = Math.Pow(wsp[0] - 4, 2) + Math.Pow(wsp[1] - 2, 2);  //nie umiałem skorzystać z funkcji testowej (wywala coś dziwnego), to musiałem ją po prostu wkleić...
         }
     }
 
+//cSimplex-------------------------------------------------------------------------------------
 
     class cSimplex
     {
@@ -40,9 +44,12 @@ namespace Optymalizacja
 
         public cSimplex(int n) //n - z ilu punktów składa się simpleks
         {
+            pkt = new cPoint[n];
             for(int i=0; i<n; i++)
                 pkt[i] = new cPoint(n-1);   //simpleks ma rozmiar o jeden większy niż ilość wymiarów zadania
         }
+
+
 
         public void liczS() //oblicza wartość każdego punktu simpleksu
         {
@@ -51,16 +58,35 @@ namespace Optymalizacja
         }
     }
 
+//cSimplexSolver-------------------------------------------------------------------------------------
 
     class cSimplexSolver
     {
         public byte n;          //n-wymiarowa funkcja
-        public cSimplex simpPocz;    //simpleks początkowy
+        public double epsilon;
+        public cSimplex simpPocz, simpTemp, simpWynik;    //simpleks początkowy, roboczy, wynikowy
 
-        public cSimplexSolver(byte n)   //n - ilość wymiarów funkcji
+        public cSimplexSolver(byte n, double epsilon)   //n - ilość wymiarów funkcji
         {
             this.n = n;
+            this.epsilon = epsilon;
             simpPocz = new cSimplex(n+1);   //simpleks zawsze o 1 więcej punktów
+            simpTemp = new cSimplex(n+1);
+            simpWynik = new cSimplex(n+1);
+
+            Random rand = new Random();
+            for (byte i = 0; i < n + 1; i++) //pętle losują każdą współrzędną dla każdego punktu
+                for (byte j = 0; j < n; j++)
+                    simpPocz.pkt[i].wsp[j] = rand.Next(-100,100)/10.0;
+
+            simpPocz.liczS();
+        }
+
+
+
+        public void solveSimp()
+        {
+
         }
     }
 }
