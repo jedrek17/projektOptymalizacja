@@ -41,13 +41,18 @@
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
-            this.btPreviousStep = new System.Windows.Forms.Button();
             this.btNextStep = new System.Windows.Forms.Button();
+            this.btPreviousStep = new System.Windows.Forms.Button();
+            this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
+            this.nudInsertSize = new System.Windows.Forms.NumericUpDown();
+            this.tbInsertEpsilon = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -129,7 +134,7 @@
             // 
             // btCalculate
             // 
-            this.btCalculate.Location = new System.Drawing.Point(698, 61);
+            this.btCalculate.Location = new System.Drawing.Point(698, 71);
             this.btCalculate.Name = "btCalculate";
             this.btCalculate.Size = new System.Drawing.Size(75, 23);
             this.btCalculate.TabIndex = 8;
@@ -138,7 +143,7 @@
             // 
             // tbInsertFunction
             // 
-            this.tbInsertFunction.Location = new System.Drawing.Point(108, 35);
+            this.tbInsertFunction.Location = new System.Drawing.Point(108, 19);
             this.tbInsertFunction.Name = "tbInsertFunction";
             this.tbInsertFunction.Size = new System.Drawing.Size(665, 20);
             this.tbInsertFunction.TabIndex = 9;
@@ -146,7 +151,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(6, 35);
+            this.label5.Location = new System.Drawing.Point(6, 22);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(96, 13);
             this.label5.TabIndex = 10;
@@ -154,6 +159,10 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.tbInsertEpsilon);
+            this.groupBox2.Controls.Add(this.nudInsertSize);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.btCalculate);
             this.groupBox2.Controls.Add(this.tbInsertFunction);
@@ -176,13 +185,14 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Wyniki";
             // 
-            // pictureBoxGraph
+            // btNextStep
             // 
-            this.pictureBoxGraph.Location = new System.Drawing.Point(133, 19);
-            this.pictureBoxGraph.Name = "pictureBoxGraph";
-            this.pictureBoxGraph.Size = new System.Drawing.Size(640, 640);
-            this.pictureBoxGraph.TabIndex = 0;
-            this.pictureBoxGraph.TabStop = false;
+            this.btNextStep.Location = new System.Drawing.Point(750, 665);
+            this.btNextStep.Name = "btNextStep";
+            this.btNextStep.Size = new System.Drawing.Size(23, 23);
+            this.btNextStep.TabIndex = 2;
+            this.btNextStep.Text = ">";
+            this.btNextStep.UseVisualStyleBackColor = true;
             // 
             // btPreviousStep
             // 
@@ -193,14 +203,45 @@
             this.btPreviousStep.Text = "<";
             this.btPreviousStep.UseVisualStyleBackColor = true;
             // 
-            // btNextStep
+            // pictureBoxGraph
             // 
-            this.btNextStep.Location = new System.Drawing.Point(750, 665);
-            this.btNextStep.Name = "btNextStep";
-            this.btNextStep.Size = new System.Drawing.Size(23, 23);
-            this.btNextStep.TabIndex = 2;
-            this.btNextStep.Text = ">";
-            this.btNextStep.UseVisualStyleBackColor = true;
+            this.pictureBoxGraph.Location = new System.Drawing.Point(133, 19);
+            this.pictureBoxGraph.Name = "pictureBoxGraph";
+            this.pictureBoxGraph.Size = new System.Drawing.Size(640, 640);
+            this.pictureBoxGraph.TabIndex = 0;
+            this.pictureBoxGraph.TabStop = false;
+            // 
+            // nudInsertSize
+            // 
+            this.nudInsertSize.Location = new System.Drawing.Point(653, 45);
+            this.nudInsertSize.Name = "nudInsertSize";
+            this.nudInsertSize.Size = new System.Drawing.Size(120, 20);
+            this.nudInsertSize.TabIndex = 11;
+            // 
+            // tbInsertEpsilon
+            // 
+            this.tbInsertEpsilon.Location = new System.Drawing.Point(108, 45);
+            this.tbInsertEpsilon.Name = "tbInsertEpsilon";
+            this.tbInsertEpsilon.Size = new System.Drawing.Size(150, 20);
+            this.tbInsertEpsilon.TabIndex = 12;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Wprowadź epsilon";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(562, 47);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Rozmiar zadania";
             // 
             // Form1
             // 
@@ -218,6 +259,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -240,6 +282,10 @@
         private System.Windows.Forms.Button btNextStep;
         private System.Windows.Forms.Button btPreviousStep;
         private System.Windows.Forms.PictureBox pictureBoxGraph;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox tbInsertEpsilon;
+        private System.Windows.Forms.NumericUpDown nudInsertSize;
     }
 }
 
