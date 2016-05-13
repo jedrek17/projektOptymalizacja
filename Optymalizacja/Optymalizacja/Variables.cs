@@ -25,7 +25,6 @@ namespace Optymalizacja
 
             public void liczP() //oblicza wartość funkcji w punkcie
             {
-                //y = Math.Pow(wsp[0] - 4, 2) + Math.Pow(wsp[1] - 2, 2);  //nie umiałem skorzystać z funkcji testowej (wywala coś dziwnego), to musiałem ją po prostu wkleić...
                 y = rownanieTestowe(wsp[0], wsp[1]);
             }
 
@@ -48,10 +47,12 @@ namespace Optymalizacja
         class cSimplex
         {
             public cPoint[] pkt;
+            public int n;
 
             public cSimplex(int n) //n - z ilu punktów składa się simpleks
             {
                 pkt = new cPoint[n];
+                this.n = n;
                 for (int i = 0; i < n; i++)
                     pkt[i] = new cPoint(n - 1);   //simpleks ma rozmiar o jeden większy niż ilość wymiarów zadania
             }
@@ -73,6 +74,7 @@ namespace Optymalizacja
 
                 for (int i = 0; i < this.pkt.Length; i++)
                     this.pkt[i].kopiujZeZrodla(zrodlo.pkt[i]);
+                this.n = zrodlo.n;
                 return true;
             }
 
@@ -135,6 +137,36 @@ namespace Optymalizacja
             }
 
 
+            
+            private cSimplex ekspansjaSimpleksu(cSimplex simpZew) //zestaw poniższych funkcji wykonuje operację na kopii simpleksu, nie naruszając oryginału
+            {
+                cSimplex simp = new cSimplex(simpZew.n);
+                simp.kopiujZeZrodla(simpZew);
+
+                return simp;
+            }
+
+
+
+            private cSimplex kontrakcjaSimpleksu(cSimplex simpZew)
+            {
+                cSimplex simp = new cSimplex(simpZew.n);
+                simp.kopiujZeZrodla(simpZew);
+
+                return simp;
+            }
+
+
+
+            private cSimplex skurczenieSimpleksu(cSimplex simpZew)
+            {
+                cSimplex simp = new cSimplex(simpZew.n);
+                simp.kopiujZeZrodla(simpZew);
+
+                return simp;
+            }
+
+
 
             public void solveSimp()
             {
@@ -143,6 +175,9 @@ namespace Optymalizacja
                 print();
             }
         }
+
+
+
 
         public static double rownanieTestowe(double x1, double x2)
         {
