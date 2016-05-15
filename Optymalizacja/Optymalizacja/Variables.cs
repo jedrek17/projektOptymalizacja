@@ -10,8 +10,10 @@ namespace Optymalizacja
     partial class Form1
     {
         // tutaj bedziemy umieszczac roznego rodzaju zmienne wykorzystywane w programie 
+        double scale = 0.05; // skala wyswitlanego wykresu
+        int stepNumber = 0;
+        
         //cPoint-------------------------------------------------------------------------------------
-
         class cPoint
         {
             public double[] wsp;    //współrzędne
@@ -243,19 +245,20 @@ namespace Optymalizacja
                      //red = 255 - value;
                     green = 0 + value;
                 }
-                else if (value < 0x00ffff)
+                else if (value < 0x00ff00)
                 {
-                    red = 255 - (value & 0x00ff00 >> 8);
-                    //green = 0 + (value & 0x00ff00 >> 8);
+                    value = value >> 8;
+                    red = 255 - value;
                     green = 255;
                     
                 }
-                else if (value < 0xffffff)
+                else if (value < 0xff0000)
                 {
+                    value = value >> 16;
                     red = 0;
                     green = 255;
-                    //blue = 0 + (value & 0xff0000 >> 16);
-                    blue = 0;
+                    blue = 0 + value;
+                    //blue = 0;
                 }
                 else
                 {

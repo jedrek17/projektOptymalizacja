@@ -17,7 +17,6 @@ namespace Optymalizacja
 
         private void button1_Click(object sender, EventArgs e)
         {
-            double scale = 0.05;
             //label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
             cSimplexSolver solver = new cSimplexSolver(4, 0.1);
             label1.Text = solver.simpPocz.pkt[0].y.ToString() + ", " + solver.simpPocz.pkt[0].wsp[0] + ", " + solver.simpPocz.pkt[0].wsp[1];
@@ -30,6 +29,21 @@ namespace Optymalizacja
 
             pictureBoxGraph.Image = graph.getGraph(0);
             
+            label8.Text = "Jednostka: " + 40 * scale;
+        }
+
+        private void btPrzybliz_Click(object sender, EventArgs e)
+        {
+            scale = scale - 0.01;
+            drawGraph graph = new drawGraph(640, 640, scale);
+            pictureBoxGraph.Image = graph.getGraph(stepNumber);
+            label8.Text = "Jednostka: " + 40 * scale;
+        }
+        private void btOddal_Click(object sender, EventArgs e)
+        {
+            scale += 0.01;
+            drawGraph graph = new drawGraph(640, 640, scale);
+            pictureBoxGraph.Image = graph.getGraph(stepNumber);
             label8.Text = "Jednostka: " + 40 * scale;
         }
 

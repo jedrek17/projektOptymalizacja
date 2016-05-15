@@ -45,10 +45,12 @@
             this.tbInsertEpsilon = new System.Windows.Forms.TextBox();
             this.nudInsertSize = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.btOddal = new System.Windows.Forms.Button();
+            this.btPrzybliz = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.btNextStep = new System.Windows.Forms.Button();
             this.btPreviousStep = new System.Windows.Forms.Button();
             this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
@@ -208,6 +210,8 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.btOddal);
+            this.groupBox3.Controls.Add(this.btPrzybliz);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.btNextStep);
             this.groupBox3.Controls.Add(this.btPreviousStep);
@@ -218,6 +222,35 @@
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Wyniki";
+            // 
+            // btOddal
+            // 
+            this.btOddal.Location = new System.Drawing.Point(692, 665);
+            this.btOddal.Name = "btOddal";
+            this.btOddal.Size = new System.Drawing.Size(23, 23);
+            this.btOddal.TabIndex = 5;
+            this.btOddal.Text = "-";
+            this.btOddal.UseVisualStyleBackColor = true;
+            this.btOddal.Click += new System.EventHandler(this.btOddal_Click);
+            // 
+            // btPrzybliz
+            // 
+            this.btPrzybliz.Location = new System.Drawing.Point(721, 665);
+            this.btPrzybliz.Name = "btPrzybliz";
+            this.btPrzybliz.Size = new System.Drawing.Size(23, 23);
+            this.btPrzybliz.TabIndex = 4;
+            this.btPrzybliz.Text = "+";
+            this.btPrzybliz.UseVisualStyleBackColor = true;
+            this.btPrzybliz.Click += new System.EventHandler(this.btPrzybliz_Click);
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(11, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "Jednostka:";
             // 
             // btNextStep
             // 
@@ -230,7 +263,7 @@
             // 
             // btPreviousStep
             // 
-            this.btPreviousStep.Location = new System.Drawing.Point(721, 665);
+            this.btPreviousStep.Location = new System.Drawing.Point(663, 665);
             this.btPreviousStep.Name = "btPreviousStep";
             this.btPreviousStep.Size = new System.Drawing.Size(23, 23);
             this.btPreviousStep.TabIndex = 1;
@@ -244,15 +277,6 @@
             this.pictureBoxGraph.Size = new System.Drawing.Size(640, 640);
             this.pictureBoxGraph.TabIndex = 0;
             this.pictureBoxGraph.TabStop = false;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(11, 20);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(59, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Jednostka:";
             // 
             // Form1
             // 
@@ -299,6 +323,8 @@
         private System.Windows.Forms.TextBox tbInsertEpsilon;
         private System.Windows.Forms.NumericUpDown nudInsertSize;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Button btOddal;
+        private System.Windows.Forms.Button btPrzybliz;
     }
 }
 
