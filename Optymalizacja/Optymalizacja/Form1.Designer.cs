@@ -204,9 +204,24 @@
             // nudInsertSize
             // 
             this.nudInsertSize.Location = new System.Drawing.Point(653, 45);
+            this.nudInsertSize.Maximum = new decimal(new int[] {
+            3,
+            0,
+            0,
+            0});
+            this.nudInsertSize.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             this.nudInsertSize.Name = "nudInsertSize";
             this.nudInsertSize.Size = new System.Drawing.Size(120, 20);
             this.nudInsertSize.TabIndex = 11;
+            this.nudInsertSize.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
             // 
             // groupBox3
             // 
