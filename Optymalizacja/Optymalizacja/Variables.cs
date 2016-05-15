@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -185,5 +186,61 @@ namespace Optymalizacja
         }
 
 
+        public class drawGraph
+        {
+            Bitmap bmpBackgroud;
+            Bitmap bmpToShow;
+            double scale;
+            int width;
+            int height;
+
+            public drawGraph(int _width, int _height, double _scale)
+            {
+                width = _width;
+                height = _height;
+                bmpBackgroud = new Bitmap(width, height);
+                scale = _scale;
+                createGraph();
+            }
+            private void createGraph()
+            {
+                double val;
+                for (int i = 0; i < width; i++)
+                {
+                    for (int j = 0; j < height; j++)
+                    {
+                        val = rownanieTestowe((i - (width/2))*scale, (j - (height/2))*scale);
+                        Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
+                        Color c2 = Color.White;
+                        bmpBackgroud.SetPixel(i,j,c);
+                        //bmpBackgroud.SetPixel(i, j, Color.White);
+                    }
+                }
+
+                drawAxis();
+
+                bmpToShow = bmpBackgroud;
+            }
+
+            private void drawAxis()
+            {
+                for (int i = 0; i < width; i++)
+                {
+                    bmpBackgroud.SetPixel(i, height / 2, Color.Black);
+                }
+                for (int i = 0; i < height; i++)
+                {
+                    bmpBackgroud.SetPixel(width/2 ,i, Color.Black);
+                }
+            }
+
+            public Bitmap getGraph(int stepNumber)
+            {
+                return bmpToShow;
+            }
+        }
+
+
     }
+   
 }
