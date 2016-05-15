@@ -40,19 +40,20 @@
             this.tbInsertFunction = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.tbInsertEpsilon = new System.Windows.Forms.TextBox();
+            this.nudInsertSize = new System.Windows.Forms.NumericUpDown();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.btNextStep = new System.Windows.Forms.Button();
             this.btPreviousStep = new System.Windows.Forms.Button();
             this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
-            this.nudInsertSize = new System.Windows.Forms.NumericUpDown();
-            this.tbInsertEpsilon = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
@@ -173,8 +174,41 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dane wejściowe";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(562, 47);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.TabIndex = 14;
+            this.label7.Text = "Rozmiar zadania";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(8, 47);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(94, 13);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "Wprowadź epsilon";
+            // 
+            // tbInsertEpsilon
+            // 
+            this.tbInsertEpsilon.Location = new System.Drawing.Point(108, 45);
+            this.tbInsertEpsilon.Name = "tbInsertEpsilon";
+            this.tbInsertEpsilon.Size = new System.Drawing.Size(150, 20);
+            this.tbInsertEpsilon.TabIndex = 12;
+            // 
+            // nudInsertSize
+            // 
+            this.nudInsertSize.Location = new System.Drawing.Point(653, 45);
+            this.nudInsertSize.Name = "nudInsertSize";
+            this.nudInsertSize.Size = new System.Drawing.Size(120, 20);
+            this.nudInsertSize.TabIndex = 11;
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.btNextStep);
             this.groupBox3.Controls.Add(this.btPreviousStep);
             this.groupBox3.Controls.Add(this.pictureBoxGraph);
@@ -211,37 +245,14 @@
             this.pictureBoxGraph.TabIndex = 0;
             this.pictureBoxGraph.TabStop = false;
             // 
-            // nudInsertSize
+            // label8
             // 
-            this.nudInsertSize.Location = new System.Drawing.Point(653, 45);
-            this.nudInsertSize.Name = "nudInsertSize";
-            this.nudInsertSize.Size = new System.Drawing.Size(120, 20);
-            this.nudInsertSize.TabIndex = 11;
-            // 
-            // tbInsertEpsilon
-            // 
-            this.tbInsertEpsilon.Location = new System.Drawing.Point(108, 45);
-            this.tbInsertEpsilon.Name = "tbInsertEpsilon";
-            this.tbInsertEpsilon.Size = new System.Drawing.Size(150, 20);
-            this.tbInsertEpsilon.TabIndex = 12;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(8, 47);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(94, 13);
-            this.label6.TabIndex = 13;
-            this.label6.Text = "Wprowadź epsilon";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(562, 47);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(85, 13);
-            this.label7.TabIndex = 14;
-            this.label7.Text = "Rozmiar zadania";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(11, 20);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(59, 13);
+            this.label8.TabIndex = 3;
+            this.label8.Text = "Jednostka:";
             // 
             // Form1
             // 
@@ -257,9 +268,10 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            this.groupBox3.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).EndInit();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxGraph)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -286,6 +298,7 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox tbInsertEpsilon;
         private System.Windows.Forms.NumericUpDown nudInsertSize;
+        private System.Windows.Forms.Label label8;
     }
 }
 

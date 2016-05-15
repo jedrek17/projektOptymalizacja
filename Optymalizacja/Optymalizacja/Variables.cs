@@ -210,8 +210,9 @@ namespace Optymalizacja
                     for (int j = 0; j < height; j++)
                     {
                         val = rownanieTestowe((i - (width/2))*scale, (j - (height/2))*scale);
-                        Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
-                        Color c2 = Color.White;
+                       // Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
+                       // Color c2 = Color.White;
+                        Color c = getColor(val);
                         bmpBackgroud.SetPixel(i,j,c);
                         //bmpBackgroud.SetPixel(i, j, Color.White);
                     }
@@ -221,21 +222,88 @@ namespace Optymalizacja
 
                 bmpToShow = bmpBackgroud;
             }
+            private Color getColor(double val)
+            {
+                int value = 0;
+                if (((int)(val * 100)) > 0xffffff)
+                {
+                    value = 0xffffff;
+                }
+                else
+                {
+                    value = (int)(val * 100);
+                }
+                //int value = (val*100);
+                Color c;
+                int red = 255;
+                int green = 0;
+                int blue = 0;
+                if (value < 0x0000ff)
+                {
+                     //red = 255 - value;
+                    green = 0 + value;
+                }
+                else if (value < 0x00ffff)
+                {
+                    red = 255 - (value & 0x00ff00 >> 8);
+                    //green = 0 + (value & 0x00ff00 >> 8);
+                    green = 255;
+                    
+                }
+                else if (value < 0xffffff)
+                {
+                    red = 0;
+                    green = 255;
+                    //blue = 0 + (value & 0xff0000 >> 16);
+                    blue = 0;
+                }
+                else
+                {
+                    red = 0;
+                    green = 255;
+                    blue = 255;
+                }
+                //int red = 255 - (value & 0xff0000 >> 16);
+                //int green = 0 + (value & 0x00ff00 >> 8);
+                //int blue = 0 + (value & 0x0000ff);
+                c = Color.FromArgb(255, red, green, blue);
+                
+                //c = Color.FromArgb(255, value & 0xff0000 >> 16, value & 0x00ff00>>8, value & 0x0000ff);
+                //c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xff0000) - (int)val));
 
+//                return Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xff0000) - (int)val));
+                return c;
+            }
             private void drawAxis()
             {
                 for (int i = 0; i < width; i++)
                 {
                     bmpBackgroud.SetPixel(i, height / 2, Color.Black);
+                    if (i % 40 == 0)
+                    {
+                        bmpBackgroud.SetPixel(i, height / 2 + 2, Color.Black);
+                        bmpBackgroud.SetPixel(i, height / 2 + 1, Color.Black);
+                        bmpBackgroud.SetPixel(i, height / 2 - 1, Color.Black);
+                        bmpBackgroud.SetPixel(i, height / 2 - 2, Color.Black);
+                    }
                 }
                 for (int i = 0; i < height; i++)
                 {
                     bmpBackgroud.SetPixel(width/2 ,i, Color.Black);
+                    if (i % 40 == 0)
+                    {
+                        bmpBackgroud.SetPixel(width / 2 + 2,i, Color.Black);
+                        bmpBackgroud.SetPixel(width / 2 + 1,i, Color.Black);
+                        bmpBackgroud.SetPixel(width / 2 - 1,i, Color.Black);
+                        bmpBackgroud.SetPixel(width / 2 - 2,i, Color.Black);
+                    }
+
                 }
             }
 
             public Bitmap getGraph(int stepNumber)
             {
+                bmpToShow.RotateFlip(RotateFlipType.Rotate270FlipNone);
                 return bmpToShow;
             }
         }
