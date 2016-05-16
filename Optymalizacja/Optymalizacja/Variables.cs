@@ -1,4 +1,5 @@
-﻿using System;
+﻿using org.mariuszgromada.math.mxparser;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -224,7 +225,14 @@ namespace Optymalizacja
             return Math.Pow(x1 - 4, 2) + Math.Pow(x2 - 2, 2);  //Funkcja ma min w punkcie (4,2)
         }
 
+        public static double getValFromExpression(double x1, double x2, string expression)
+        {
+            double val = 0;
 
+            Expression e; // potem to dorobie :)
+
+            return val;
+        }
         public class drawGraph
         {
             Bitmap bmpBackgroud;
@@ -232,14 +240,16 @@ namespace Optymalizacja
             double scale;
             int width;
             int height;
+            string expression;
 
-            public drawGraph(int _width, int _height, double _scale)
+            public drawGraph(int _width, int _height, double _scale, string _exporession)
             {
                 width = _width;
                 height = _height;
                 bmpBackgroud = new Bitmap(width, height);
                 scale = _scale;
                 createGraph();
+                expression = _exporession;
             }
             private void createGraph()
             {
@@ -249,6 +259,7 @@ namespace Optymalizacja
                     for (int j = 0; j < height; j++)
                     {
                         val = rownanieTestowe((i - (width/2))*scale, (j - (height/2))*scale);
+//                        val = getValFromExpression((i - (width / 2)) * scale, (j - (height / 2)) * scale, expression);
                        // Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
                        // Color c2 = Color.White;
                         Color c = getColor(val);
