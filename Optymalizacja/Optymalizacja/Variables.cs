@@ -242,18 +242,20 @@ namespace Optymalizacja
 
 
             //private
-            public cPoint skurczenieSimpleksu(cSimplex simp)    //<<<---tą muszę jeszcze zrobić
+            public cSimplex skurczenieSimpleksu(cSimplex simp)
             {
                 cPoint srCiez = new cPoint(n);
                 srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
                 cPoint pktWynikowy = new cPoint(n);
                 pktWynikowy.zerujWspolrzedne();
+                cSimplex simpWynikowy = new cSimplex(simp.pkt.Length);
 
-                for (int i = 0; i < n; i++)   //pętla omiatająca współrzędne
-                    //pktWynikowy.wsp[i] = 2 * srCiez.wsp[i] - simp.pkt[simp.pkt.Length - 1].wsp[i];
+                for(int j=0; j<simp.pkt.Length; j++)        //pętla omiatająca kolejne punkty - j
+                    for (int i=0; i<n; i++)                 //pętla omiatająca współrzędne - i
+                        simpWynikowy.pkt[j].wsp[i] = simp.pkt[0].wsp[i] + skurczenie*(simp.pkt[j].wsp[i]-simp.pkt[0].wsp[i]);  //pkt[j]=pkt[0]+wspSkurczenia*(pkt[j]-pkt[0]) gdzie pkt[0] to najmniejszy-najlepszy punkt
 
-                pktWynikowy.liczP();
-                return pktWynikowy;
+                //simpWynikowy.liczS();
+                return simpWynikowy;
             }
 
 
@@ -262,8 +264,11 @@ namespace Optymalizacja
             {
                 simpPocz.liczS();
                 simpPocz.sortujS();
-                simpTemp.kopiujZeZrodla(simpPocz);
-                print();
+                for(int i=0; i<40; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
+                {
+                    simpTemp.kopiujZeZrodla(simpPocz);
+                    print();
+                }
             }
         }
 
