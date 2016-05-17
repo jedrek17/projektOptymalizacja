@@ -22,7 +22,9 @@ namespace Optymalizacja
             label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
             label2.Text = solver.simpPocz.pkt[1].y.ToString() + ";   " + solver.simpPocz.pkt[1].wsp[0] + ";   " + solver.simpPocz.pkt[1].wsp[1];
             label3.Text = solver.simpPocz.pkt[2].y.ToString() + ";   " + solver.simpPocz.pkt[2].wsp[0] + ";   " + solver.simpPocz.pkt[2].wsp[1];
-            label4.Text = "SrodekC " + (solver.liczPolepszonySrCiezk(solver.simpPocz)).wsp[0] + ";   " + (solver.liczPolepszonySrCiezk(solver.simpPocz)).wsp[1];
+            solver.simpPocz.sortujS();
+            solver.odbicieSimpleksu(solver.simpPocz);
+            label4.Text = "Odbity największy " + solver.odbicieSimpleksu(solver.simpPocz).wsp[0] + ";   " + solver.odbicieSimpleksu(solver.simpPocz).wsp[1];
             //label4.Text = ""+ solver.skurczenie;
             //label3.Text = solver.simpPocz.pkt[0].wsp[1].ToString();
             //pictureBoxGraph.Image = new Bitmap(640, 640);

@@ -1,4 +1,4 @@
-﻿using org.mariuszgromada.math.mxparser;
+﻿using org.mariuszgromada.math.mxparser;                           <<<---!!!
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -147,8 +147,8 @@ namespace Optymalizacja
             }
 
 
-            //private
-            public cPoint liczPolepszonySrCiezk(cSimplex simp)
+            
+            private cPoint liczPolepszonySrCiezk(cSimplex simp)
             {
                 cPoint punkt = new cPoint(n);
                 punkt.zerujWspolrzedne();
@@ -176,41 +176,91 @@ namespace Optymalizacja
 
                 return simp;
             }*/
-            private void odbicieSimpleksu(cSimplex simp) //poniższych czterech metod używać zawsze na kopii simpleksu - działają bezpośrednio na parametrze
+            public cPoint odbicieSimpleksu(cSimplex simp) //poniższych pięciu metod używać zawsze z posortowanym simpleksem <<<---!!!
             {
                 cPoint srCiez = new cPoint(n);
                 srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
-                
+                cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();
+
+                for (int i=0; i<n; i++)   //pętla omiatająca współrzędne
+                    pktWynikowy.wsp[i] = 2*srCiez.wsp[i] - simp.pkt[simp.pkt.Length-1].wsp[i]; //2*srCiezkosci-najgorszyPunkt
+
+                pktWynikowy.liczP();
+                return pktWynikowy;
+                //simp.pkt[simp.pkt.Length-1].kopiujZeZrodla(pktWynikowy);    //przypisanie na najgorszy punkt nowego-odbitego punktu
+            }
+
+
+            //private
+            public cPoint ekspansjaSimpleksu(cSimplex simp, cPoint odbityPkt)  //dla zaoszczędzenia nieco obliczeń przekazuje się odbity punkt (odbity za pomocą metody powyżej)
+            {
+                cPoint srCiez = new cPoint(n);
+                srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
+                cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();
+
+                for (int i = 0; i < n; i++)   //pętla omiatająca współrzędne
+                    pktWynikowy.wsp[i] = srCiez.wsp[i] + ekspansja*(odbityPkt.wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspEkspansji*(odbityPkt - srCiezkosci)
+
+                pktWynikowy.liczP();
+                return pktWynikowy;
+            }
+
+
+            //private
+            public cPoint kontrakcjaSimpleksuDoSr(cSimplex simp)
+            {
+                cPoint srCiez = new cPoint(n);
+                srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
+                cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();
+
+                for (int i = 0; i < n; i++)   //pętla omiatająca współrzędne
+                    pktWynikowy.wsp[i] = srCiez.wsp[i] + kontrakcja*(simp.pkt[simp.pkt.Length-1].wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspKontrakcji*(najgorszyPkt-srCiezkosci)
+
+                pktWynikowy.liczP();
+                return pktWynikowy;
+            }
+
+
+            //private
+            public cPoint kontrakcjaSimpleksuNaZew(cSimplex simp, cPoint odbityPkt)
+            {
+                cPoint srCiez = new cPoint(n);
+                srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
+                cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();
+
+                for (int i = 0; i < n; i++)   //pętla omiatająca współrzędne
+                    pktWynikowy.wsp[i] = srCiez.wsp[i] + kontrakcja * (odbityPkt.wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspKontrakcji*(odbityPkt-srCiezkosci)
+
+                pktWynikowy.liczP();
+                return pktWynikowy;
             }
 
 
 
-            private void ekspansjaSimpleksu(cSimplex simp)
+            //private
+            public cPoint skurczenieSimpleksu(cSimplex simp)    //<<<---tą muszę jeszcze zrobić
             {
                 cPoint srCiez = new cPoint(n);
+                srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
+                cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();
 
-            }
+                for (int i = 0; i < n; i++)   //pętla omiatająca współrzędne
+                    //pktWynikowy.wsp[i] = 2 * srCiez.wsp[i] - simp.pkt[simp.pkt.Length - 1].wsp[i];
 
-
-
-            private void kontrakcjaSimpleksu(cSimplex simp)
-            {
-                cPoint srCiez = new cPoint(n);
-
-            }
-
-
-
-            private void skurczenieSimpleksu(cSimplex simp)
-            {
-                cPoint srCiez = new cPoint(n);
-
+                pktWynikowy.liczP();
+                return pktWynikowy;
             }
 
 
 
             public void solveSimp()
             {
+                simpPocz.liczS();
                 simpPocz.sortujS();
                 simpTemp.kopiujZeZrodla(simpPocz);
                 print();
@@ -229,7 +279,7 @@ namespace Optymalizacja
         {
             double val = 0;
 
-            Expression e; // potem to dorobie :)
+            Expression e; // potem to dorobie :)                    <<<---!!!
 
             return val;
         }
