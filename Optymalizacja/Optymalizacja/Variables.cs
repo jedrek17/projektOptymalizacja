@@ -254,7 +254,7 @@ namespace Optymalizacja
                     for (int i=0; i<n; i++)                 //pętla omiatająca współrzędne - i
                         simpWynikowy.pkt[j].wsp[i] = simp.pkt[0].wsp[i] + skurczenie*(simp.pkt[j].wsp[i]-simp.pkt[0].wsp[i]);  //pkt[j]=pkt[0]+wspSkurczenia*(pkt[j]-pkt[0]) gdzie pkt[0] to najmniejszy-najlepszy punkt
 
-                //simpWynikowy.liczS();
+                //simpWynikowy.liczS();         //  <<<---!!! ? możeby jednak policzyć odrazu...
                 return simpWynikowy;
             }
 
@@ -262,12 +262,26 @@ namespace Optymalizacja
 
             public void solveSimp()
             {
+                cPoint pktOdbity = new cPoint(n);
+                cPoint pktTemp = new cPoint(n);
                 simpPocz.liczS();
                 simpPocz.sortujS();
-                for(int i=0; i<40; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
+                print();
+                simpTemp.kopiujZeZrodla(simpPocz);
+                for (int i=0; i<40; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
                 {
-                    simpTemp.kopiujZeZrodla(simpPocz);
-                    print();
+                    simpTemp.liczS();
+                    simpTemp.sortujS();
+                    pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punkyu
+
+                    if(pktOdbity.y<simpTemp.pkt[0].y)
+                    {
+
+                    }
+                    if(pktOdbity.y>simpTemp.pkt[simpTemp.pkt.Length-2].y)   // -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
+                    {
+
+                    }
                 }
             }
         }
