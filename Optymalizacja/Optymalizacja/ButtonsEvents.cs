@@ -12,11 +12,9 @@ namespace Optymalizacja
         //funkcje związane z obsługą zdarzeń
         drawGraph graph;
 
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
+            sExpression = tbInsertFunction.Text;
             //label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
             cSimplexSolver solver = new cSimplexSolver(2, 0.1, 1.5);
             label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
@@ -50,6 +48,19 @@ namespace Optymalizacja
             graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
             pictureBoxGraph.Image = graph.getGraph(stepNumber);
             label8.Text = "Jednostka: " + 40 * scale;
+        }
+
+        private void btCalculate_Click(object sender, EventArgs e)
+        {
+            sExpression = tbInsertFunction.Text;
+            if (nudInsertSize.Value == 2)
+            {
+                label9.Text = getValFromExpression(5, 2).ToString();
+            }
+            else if (nudInsertSize.Value == 3)
+            {
+                label9.Text = getValFromExpression(5, 2, 3).ToString();
+            }
         }
 
     }

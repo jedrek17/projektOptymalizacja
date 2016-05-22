@@ -17,10 +17,5 @@ namespace Optymalizacja
             InitializeComponent();
         }
 
-
-
-
-
-
     }
 }

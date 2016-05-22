@@ -1,4 +1,5 @@
-﻿//using org.mariuszgromada.math.mxparser;                           <<<---!!!
+﻿using org.mariuszgromada.math.mxparser;
+//using org.mariuszgromada.math.mxparser;                           <<<---!!!
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -13,7 +14,8 @@ namespace Optymalizacja
         // tutaj bedziemy umieszczac roznego rodzaju zmienne wykorzystywane w programie 
         double scale = 0.05; // skala wyswitlanego wykresu
         int stepNumber = 0;
-        
+        public static string sExpression = "";
+
         //cPoint-------------------------------------------------------------------------------------
         class cPoint
         {
@@ -327,14 +329,24 @@ namespace Optymalizacja
             return Math.Pow(x1 - 4, 2) + Math.Pow(x2 - 2, 2);  //Funkcja ma min w punkcie (4,2)
         }
 
-        public static double getValFromExpression(double x1, double x2, string expression)
+        public static double getValFromExpression(double x_1, double x_2)
         {
-            double val = 0;
+            Argument x1 = new Argument("x1", x_1);
+            Argument x2 = new Argument("x2", x_2);
 
-        //    Expression e; // potem to dorobie :)                    <<<---!!!
-
-            return val;
+            Expression e = new Expression(sExpression,x1,x2);
+            return e.calculate();
         }
+        public static double getValFromExpression(double x_1, double x_2, double x_3)
+        {
+            Argument x1 = new Argument("x1", x_1);
+            Argument x2 = new Argument("x2", x_2);
+            Argument x3 = new Argument("x3", x_3);
+
+            Expression e = new Expression(sExpression, x1, x2, x3);
+            return e.calculate();
+        }
+
         public class drawGraph
         {
             Bitmap bmpBackgroud;

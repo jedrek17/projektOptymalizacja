@@ -40,6 +40,7 @@
             this.tbInsertFunction = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.tbInsertEpsilon = new System.Windows.Forms.TextBox();
@@ -60,7 +61,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(66, 141);
+            this.button1.Location = new System.Drawing.Point(66, 161);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -130,7 +131,7 @@
             this.groupBox1.Controls.Add(this.textBox2);
             this.groupBox1.Location = new System.Drawing.Point(800, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(216, 170);
+            this.groupBox1.Size = new System.Drawing.Size(216, 190);
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tymczasowe - jakies okienka <?>";
@@ -143,6 +144,7 @@
             this.btCalculate.TabIndex = 8;
             this.btCalculate.Text = "Wylicz";
             this.btCalculate.UseVisualStyleBackColor = true;
+            this.btCalculate.Click += new System.EventHandler(this.btCalculate_Click);
             // 
             // tbInsertFunction
             // 
@@ -150,6 +152,7 @@
             this.tbInsertFunction.Name = "tbInsertFunction";
             this.tbInsertFunction.Size = new System.Drawing.Size(665, 20);
             this.tbInsertFunction.TabIndex = 9;
+            this.tbInsertFunction.Text = "(x1-4)^2 + (x2-2)^2";
             // 
             // label5
             // 
@@ -162,6 +165,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.label9);
             this.groupBox2.Controls.Add(this.label7);
             this.groupBox2.Controls.Add(this.label6);
             this.groupBox2.Controls.Add(this.tbInsertEpsilon);
@@ -175,6 +179,14 @@
             this.groupBox2.TabIndex = 11;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Dane wejściowe";
+            // 
+            // label9
+            // 
+            this.label9.Location = new System.Drawing.Point(274, 53);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(161, 13);
+            this.label9.TabIndex = 15;
+            this.label9.Text = "label9";
             // 
             // label7
             // 
@@ -340,6 +352,7 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Button btOddal;
         private System.Windows.Forms.Button btPrzybliz;
+        private System.Windows.Forms.Label label9;
     }
 }
 
