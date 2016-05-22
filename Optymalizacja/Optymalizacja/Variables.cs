@@ -1,4 +1,4 @@
-﻿using org.mariuszgromada.math.mxparser;                           <<<---!!!
+﻿//using org.mariuszgromada.math.mxparser;                           <<<---!!!
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -254,7 +254,7 @@ namespace Optymalizacja
                     for (int i=0; i<n; i++)                 //pętla omiatająca współrzędne - i
                         simpWynikowy.pkt[j].wsp[i] = simp.pkt[0].wsp[i] + skurczenie*(simp.pkt[j].wsp[i]-simp.pkt[0].wsp[i]);  //pkt[j]=pkt[0]+wspSkurczenia*(pkt[j]-pkt[0]) gdzie pkt[0] to najmniejszy-najlepszy punkt
 
-                //simpWynikowy.liczS();         //  <<<---!!! ? możeby jednak policzyć odrazu...
+                //simpWynikowy.liczS();         //  <<< możnaby policzyć odrazu...
                 return simpWynikowy;
             }
 
@@ -264,24 +264,56 @@ namespace Optymalizacja
             {
                 cPoint pktOdbity = new cPoint(n);
                 cPoint pktTemp = new cPoint(n);
-                simpPocz.liczS();
-                simpPocz.sortujS();
-                print();
+                krok = 0;
                 simpTemp.kopiujZeZrodla(simpPocz);
-                for (int i=0; i<40; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
+                simpTemp.liczS();
+                simpTemp.sortujS();
+                print();
+                for (int i=0; i<2000; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
                 {
-                    simpTemp.liczS();
-                    simpTemp.sortujS();
                     pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punkyu
 
-                    if(pktOdbity.y<simpTemp.pkt[0].y)
+                    if(pktOdbity.y<simpTemp.pkt[0].y)   //aR<aL
                     {
-
+                        pktTemp.kopiujZeZrodla(ekspansjaSimpleksu(simpTemp,pktOdbity));
+                        if (pktTemp.y < pktOdbity.y)
+                            simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
+                        else if (pktTemp.y > pktOdbity.y)
+                            simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktOdbity);
                     }
-                    if(pktOdbity.y>simpTemp.pkt[simpTemp.pkt.Length-2].y)   // -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
+                    else if(pktOdbity.y>simpTemp.pkt[simpTemp.pkt.Length-2].y)   // aR>aSH; -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
                     {
-
+                        bool jest_poprawa = false;
+                        if (pktOdbity.y > simpTemp.pkt[simpTemp.pkt.Length-1].y)    //aR>aH
+                        {
+                            pktTemp.kopiujZeZrodla(kontrakcjaSimpleksuDoSr(simpTemp));
+                            if(pktTemp.y<simpTemp.pkt[simpTemp.pkt.Length-1].y)
+                            {
+                                simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
+                                jest_poprawa = true;
+                            }
+                        }
+                        else if (pktOdbity.y < simpTemp.pkt[simpTemp.pkt.Length-1].y)   //aR<aH
+                        {
+                            pktTemp.kopiujZeZrodla(kontrakcjaSimpleksuNaZew(simpTemp,pktOdbity));
+                            if (pktTemp.y < simpTemp.pkt[simpTemp.pkt.Length - 1].y)
+                            {
+                                simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
+                                jest_poprawa = true;
+                            }
+                        }
+                        if (!jest_poprawa)   //jeśli brak poprawy w powyższych dwóch
+                        {
+                            /*simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
+                            simpTemp.liczS();
+                            simpTemp.sortujS();*/
+                            simpTemp.kopiujZeZrodla(skurczenieSimpleksu(simpTemp));     //  <<<---!!! - nie wiem czy przed tym krokiem (skurczeniem) nie należy pod najgorszy punkt podstawić odbitego
+                        }
                     }
+                    simpTemp.liczS();
+                    simpTemp.sortujS();
+                    print();
+                    krok++;
                 }
             }
         }
@@ -298,7 +330,7 @@ namespace Optymalizacja
         {
             double val = 0;
 
-            Expression e; // potem to dorobie :)                    <<<---!!!
+        //    Expression e; // potem to dorobie :)                    <<<---!!!
 
             return val;
         }
