@@ -269,7 +269,7 @@ namespace Optymalizacja
                 simpTemp.liczS();
                 simpTemp.sortujS();
                 print();
-                for (int i=0; i<2000; i++)                 //  <<<---!!! - docelowo zmienić na while i warunek stopu
+                while((Math.Abs(simpTemp.pkt[0].wsp[0]- simpTemp.pkt[1].wsp[0]))>epsilon && krok<10000)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
                 {
                     pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punkyu
 
@@ -304,10 +304,11 @@ namespace Optymalizacja
                         }
                         if (!jest_poprawa)   //jeśli brak poprawy w powyższych dwóch
                         {
-                            /*simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
+                            simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
                             simpTemp.liczS();
-                            simpTemp.sortujS();*/
-                            simpTemp.kopiujZeZrodla(skurczenieSimpleksu(simpTemp));     //  <<<---!!! - nie wiem czy przed tym krokiem (skurczeniem) nie należy pod najgorszy punkt podstawić odbitego
+                            simpTemp.sortujS(); //teoretycznie blok tych trzech linii powinien być raczej zakomentowany - skurczenie wykonywane na nienaruszonym od poprzedniej iteracji simpleksie
+
+                            simpTemp.kopiujZeZrodla(skurczenieSimpleksu(simpTemp));
                         }
                     }
                     simpTemp.liczS();
