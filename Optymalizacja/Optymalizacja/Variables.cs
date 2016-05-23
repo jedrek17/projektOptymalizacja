@@ -283,13 +283,13 @@ namespace Optymalizacja
                         else if (pktTemp.y > pktOdbity.y)
                             simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktOdbity);
                     }
-                    else if(pktOdbity.y>simpTemp.pkt[simpTemp.pkt.Length-2].y)   // aR>aSH; -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
+                    else if(pktOdbity.y>=simpTemp.pkt[simpTemp.pkt.Length-2].y)   // aR>aSH; -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
                     {
                         bool jest_poprawa = false;
-                        if (pktOdbity.y > simpTemp.pkt[simpTemp.pkt.Length-1].y)    //aR>aH
+                        if (pktOdbity.y >= simpTemp.pkt[simpTemp.pkt.Length-1].y)    //aR>aH
                         {
                             pktTemp.kopiujZeZrodla(kontrakcjaSimpleksuDoSr(simpTemp));
-                            if(pktTemp.y<simpTemp.pkt[simpTemp.pkt.Length-1].y)
+                            if(pktTemp.y < simpTemp.pkt[simpTemp.pkt.Length-1].y)
                             {
                                 simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
                                 jest_poprawa = true;
@@ -298,7 +298,7 @@ namespace Optymalizacja
                         else if (pktOdbity.y < simpTemp.pkt[simpTemp.pkt.Length-1].y)   //aR<aH
                         {
                             pktTemp.kopiujZeZrodla(kontrakcjaSimpleksuNaZew(simpTemp,pktOdbity));
-                            if (pktTemp.y < simpTemp.pkt[simpTemp.pkt.Length - 1].y)
+                            if (pktTemp.y < simpTemp.pkt[simpTemp.pkt.Length-1].y)
                             {
                                 simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
                                 jest_poprawa = true;
@@ -306,9 +306,9 @@ namespace Optymalizacja
                         }
                         if (!jest_poprawa)   //jeśli brak poprawy w powyższych dwóch
                         {
-                            simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
+                            /*simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
                             simpTemp.liczS();
-                            simpTemp.sortujS(); //teoretycznie blok tych trzech linii powinien być raczej zakomentowany - skurczenie wykonywane na nienaruszonym od poprzedniej iteracji simpleksie
+                            simpTemp.sortujS();*/ //teoretycznie blok tych trzech linii powinien być raczej zakomentowany - skurczenie wykonywane na nienaruszonym od poprzedniej iteracji simpleksie
 
                             simpTemp.kopiujZeZrodla(skurczenieSimpleksu(simpTemp));
                         }
