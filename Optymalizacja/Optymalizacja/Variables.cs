@@ -1,5 +1,4 @@
 ﻿using org.mariuszgromada.math.mxparser;
-//using org.mariuszgromada.math.mxparser;                           <<<---!!!
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -111,9 +110,11 @@ namespace Optymalizacja
 
         class cSimplexSolver
         {
-            private int n, krok;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera
+            public int n, krok;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera
             public double epsilon, ekspansja = 2.0, kontrakcja = 0.5, skurczenie = 0.5;  //parametry do ustawienia w konstruktorze
             public cSimplex simpPocz, simpTemp, simpWynik;    //simpleks początkowy, roboczy, wynikowy
+
+            public bool fl_eks, fl_konDoSr, fl_konNaZew, fl_sku;    // <(*)> - znacznik flag do znalezienia błędu
 
             public cSimplexSolver(int n, double epsilon, double ekspansja = 2.0, double kontrakcja = 0.5, double skurczenie = 0.5)   //n - ilość wymiarów funkcji, epsilon - warunek stopu
             {
@@ -133,9 +134,14 @@ namespace Optymalizacja
                 simpWynik = new cSimplex(n + 1);
 
                 Random rand = new Random();
-                for (int i = 0; i < n + 1; i++) //pętle losują każdą współrzędną dla każdego punktu
+                for (int i = 0; i <(n+1); i++) //pętle losują każdą współrzędną dla każdego punktu
                     for (int j = 0; j < n; j++)
                         simpPocz.pkt[i].wsp[j] = rand.Next(-100, 100) / 10.0;   //z zakresu -10:10
+
+                fl_eks = false;
+                fl_konDoSr = false;
+                fl_konNaZew = false;
+                fl_sku = false;             //<(*)>
 
                 simpPocz.liczS();
             }
@@ -162,9 +168,9 @@ namespace Optymalizacja
 
                 for (int i = 0; i < simpKopia.pkt[0].wsp.Length; i++)    //pętla poruszająca się po współrzędnych
                 {
-                    for (int j = 0; j < simpKopia.pkt.Length-1; j++)     //pętla poruszająca się po kolejnych punktach Simpleksu (za wyjątkiem największego - ostatniego)
+                    for (int j = 0; j < (simpKopia.pkt.Length-1); j++)     //pętla poruszająca się po kolejnych punktach Simpleksu (za wyjątkiem największego - ostatniego)
                         punkt.wsp[i] += simpKopia.pkt[j].wsp[i];         //sumuje tą samą współrzędną z kolejnych punktów
-                    punkt.wsp[i] /= simpKopia.pkt[i].wsp.Length;         //dzieli sumę przez ilość współrzędnych
+                    punkt.wsp[i] /= simpKopia.pkt.Length-1;         //dzieli sumę przez ilość punktów -1
                 }
                 return punkt;
             }
@@ -206,6 +212,7 @@ namespace Optymalizacja
                     pktWynikowy.wsp[i] = srCiez.wsp[i] + ekspansja*(odbityPkt.wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspEkspansji*(odbityPkt - srCiezkosci)
 
                 pktWynikowy.liczP();
+                fl_eks = true;  //  <(*)>
                 return pktWynikowy;
             }
 
@@ -222,6 +229,7 @@ namespace Optymalizacja
                     pktWynikowy.wsp[i] = srCiez.wsp[i] + kontrakcja*(simp.pkt[simp.pkt.Length-1].wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspKontrakcji*(najgorszyPkt-srCiezkosci)
 
                 pktWynikowy.liczP();
+                fl_konDoSr = true;  //  <(*)>
                 return pktWynikowy;
             }
 
@@ -238,6 +246,7 @@ namespace Optymalizacja
                     pktWynikowy.wsp[i] = srCiez.wsp[i] + kontrakcja * (odbityPkt.wsp[i] - srCiez.wsp[i]);    //srCiezkosci + wspKontrakcji*(odbityPkt-srCiezkosci)
 
                 pktWynikowy.liczP();
+                fl_konNaZew = true;  //  <(*)>
                 return pktWynikowy;
             }
 
@@ -257,7 +266,28 @@ namespace Optymalizacja
                         simpWynikowy.pkt[j].wsp[i] = simp.pkt[0].wsp[i] + skurczenie*(simp.pkt[j].wsp[i]-simp.pkt[0].wsp[i]);  //pkt[j]=pkt[0]+wspSkurczenia*(pkt[j]-pkt[0]) gdzie pkt[0] to najmniejszy-najlepszy punkt
 
                 //simpWynikowy.liczS();         //  <<< możnaby policzyć odrazu...
+                fl_sku = true;  //  <(*)>
                 return simpWynikowy;
+            }
+
+
+
+            private bool stopSpelniony(cSimplex simp)
+            {
+                cPoint punkt = new cPoint(n);
+                punkt.zerujWspolrzedne();
+                
+                for (int i = 0; i < simp.pkt[0].wsp.Length; i++)    //pętla poruszająca się po współrzędnych
+                {
+                    for (int j = 0; j < simp.pkt.Length; j++)     //pętla poruszająca się po kolejnych punktach Simpleksu
+                        punkt.wsp[i] += simp.pkt[j].wsp[i];         //sumuje tą samą współrzędną z kolejnych punktów
+                    punkt.wsp[i] /= simp.pkt.Length;         //dzieli sumę przez ilość punktów
+
+                    for (int j = 0; j < simp.pkt.Length; j++)   //j - po punktach
+                        if (Math.Abs(punkt.wsp[i] - simp.pkt[j].wsp[i]) > epsilon)
+                            return false;
+                }
+                return true;
             }
 
 
@@ -271,19 +301,23 @@ namespace Optymalizacja
                 simpTemp.liczS();
                 simpTemp.sortujS();
                 print();
-                while((Math.Abs(simpTemp.pkt[0].wsp[0]- simpTemp.pkt[1].wsp[0]))>epsilon && krok<10000)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
+                while(!stopSpelniony(simpTemp) && krok<10000)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
                 {
-                    pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punkyu
+                    pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punktu
 
                     if(pktOdbity.y<simpTemp.pkt[0].y)   //aR<aL
                     {
                         pktTemp.kopiujZeZrodla(ekspansjaSimpleksu(simpTemp,pktOdbity));
-                        if (pktTemp.y < pktOdbity.y)
+                        //if (pktTemp.y < pktOdbity.y)  //stara wersja warunku - solver źle działa
+                        if(pktOdbity.y < simpTemp.pkt[0].y)   //na tym warunku też jeszcze nie działa
                             simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
-                        else if (pktTemp.y > pktOdbity.y)
+                        //else if (pktTemp.y >= pktOdbity.y)    //stara wersja warunku - solver źle działa
+                        else if(pktOdbity.y >= simpTemp.pkt[0].y)   //na tym warunku też jeszcze nie działa
                             simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktOdbity);
                     }
-                    else if(pktOdbity.y>=simpTemp.pkt[simpTemp.pkt.Length-2].y)   // aR>aSH; -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
+
+                    //else if(pktOdbity.y>=simpTemp.pkt[simpTemp.pkt.Length-2].y)   // stary, błędny warunek // aR>aSH; -2 ponieważ -1 to najgorszy, a -2 to drugi najgorszy
+                    else
                     {
                         bool jest_poprawa = false;
                         if (pktOdbity.y >= simpTemp.pkt[simpTemp.pkt.Length-1].y)    //aR>aH

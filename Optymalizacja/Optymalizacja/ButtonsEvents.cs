@@ -16,12 +16,14 @@ namespace Optymalizacja
         {
             sExpression = tbInsertFunction.Text;
             //label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
-            cSimplexSolver solver = new cSimplexSolver(2, 0.1, 1.5);
-            label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
-            label2.Text = solver.simpPocz.pkt[1].y.ToString() + ";   " + solver.simpPocz.pkt[1].wsp[0] + ";   " + solver.simpPocz.pkt[1].wsp[1];
-            label3.Text = solver.simpPocz.pkt[2].y.ToString() + ";   " + solver.simpPocz.pkt[2].wsp[0] + ";   " + solver.simpPocz.pkt[2].wsp[1];
+            cSimplexSolver solver = new cSimplexSolver(2, 0.01);
+            textBox1.Text = solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
+            textBox2.Text = solver.simpPocz.pkt[1].wsp[0] + ";   " + solver.simpPocz.pkt[1].wsp[1];
+            //label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
             solver.simpPocz.sortujS();
             solver.solveSimp();
+            label1.Text ="Flagi(e,kS,kZ,s): " + solver.fl_eks + solver.fl_konDoSr + solver.fl_konNaZew + solver.fl_sku;// <(*)>
+            label2.Text = "Wykonane " + solver.krok + " kroków";
             label3.Text = "Wynik " + Math.Round(solver.simpTemp.pkt[0].wsp[0],4) + ";   " + Math.Round(solver.simpTemp.pkt[0].wsp[1],4);
             label4.Text = "Wynik " + Math.Round(solver.simpTemp.pkt[1].wsp[0],4) + ";   " + Math.Round(solver.simpTemp.pkt[1].wsp[1], 4);
             //label4.Text = ""+ solver.skurczenie;
