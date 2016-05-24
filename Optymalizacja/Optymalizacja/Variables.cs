@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections;
 
 namespace Optymalizacja
 {
@@ -30,7 +31,11 @@ namespace Optymalizacja
 
             public void liczP() //oblicza wartość funkcji w punkcie
             {
-                y = rownanieTestowe(wsp[0], wsp[1]);
+                //y = rownanieTestowe(wsp[0], wsp[1]);
+                if(wsp.Length==2)
+                    y = getValFromExpression(wsp[0], wsp[1]);
+                else
+                    y = getValFromExpression(wsp[0], wsp[1], wsp[2]);
             }
 
 
@@ -113,6 +118,7 @@ namespace Optymalizacja
             public int n, krok;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera
             public double epsilon, ekspansja = 2.0, kontrakcja = 0.5, skurczenie = 0.5;  //parametry do ustawienia w konstruktorze
             public cSimplex simpPocz, simpTemp, simpWynik;    //simpleks początkowy, roboczy, wynikowy
+            public List<cSimplex> listaSimp = new List<cSimplex>();
 
             public bool fl_eks, fl_konDoSr, fl_konNaZew, fl_sku;    // <(*)> - znacznik flag do znalezienia błędu
 
@@ -150,8 +156,9 @@ namespace Optymalizacja
 
             private void print()
             {
-                //tu możesz rysować obrazek krok po kroku - funkcja wywoływana jest w każdym kroku solvera      <<<--------------!!!
-                //najlepiej korzystaj z simpTemp i zmiennej krok (dobrze by było jakby obok obrazka wyświetlała się lista kroków)
+                /*cSimplex temp = new cSimplex(n);
+                temp.kopiujZeZrodla(simpTemp);*/
+                listaSimp.Add(simpTemp);
             }
 
 
@@ -308,11 +315,11 @@ namespace Optymalizacja
                     if(pktOdbity.y<simpTemp.pkt[0].y)   //aR<aL
                     {
                         pktTemp.kopiujZeZrodla(ekspansjaSimpleksu(simpTemp,pktOdbity));
-                        //if (pktTemp.y < pktOdbity.y)  //stara wersja warunku - solver źle działa
-                        if(pktOdbity.y < simpTemp.pkt[0].y)   //na tym warunku też jeszcze nie działa
+                        //if (pktTemp.y < pktOdbity.y)  //stara wersja warunku
+                        if(pktOdbity.y < simpTemp.pkt[0].y)
                             simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktTemp);
-                        //else if (pktTemp.y >= pktOdbity.y)    //stara wersja warunku - solver źle działa
-                        else if(pktOdbity.y >= simpTemp.pkt[0].y)   //na tym warunku też jeszcze nie działa
+                        //else if (pktTemp.y >= pktOdbity.y)    //stara wersja warunku
+                        else
                             simpTemp.pkt[simpTemp.pkt.Length-1].kopiujZeZrodla(pktOdbity);
                     }
 
@@ -360,7 +367,7 @@ namespace Optymalizacja
 
         public static double rownanieTestowe(double x1, double x2)
         {
-            return Math.Pow(x1 - 4, 2) + Math.Pow(x2 - 2, 2);  //Funkcja ma min w punkcie (4,2)
+            return Math.Pow(x1 - 4, 2) + Math.Pow(x2 - 2, 2);  //Funkcja ma min w punkcie (24,52)
         }
 
         public static double getValFromExpression(double x_1, double x_2)

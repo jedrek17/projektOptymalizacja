@@ -52,6 +52,7 @@
             this.btNextStep = new System.Windows.Forms.Button();
             this.btPreviousStep = new System.Windows.Forms.Button();
             this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
@@ -305,11 +306,21 @@
             this.pictureBoxGraph.TabIndex = 0;
             this.pictureBoxGraph.TabStop = false;
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.HorizontalScrollbar = true;
+            this.listBox1.Location = new System.Drawing.Point(800, 212);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(180, 264);
+            this.listBox1.TabIndex = 13;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(992, 750);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -353,6 +364,7 @@
         private System.Windows.Forms.Button btOddal;
         private System.Windows.Forms.Button btPrzybliz;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 
