@@ -1,4 +1,9 @@
-﻿using System;
+﻿//Algorytm wykonany według:
+//http://akson.sgh.waw.pl/~jd37272/MO/mo_zaj3.pdf - prawdopodobnie zawiera błędy
+//poprawiony według:
+//http://optymalizacja.w8.pl/simplexNM.html
+
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -33,27 +38,32 @@ namespace Optymalizacja
             //label4.Text = ""+ solver.skurczenie;
             //label3.Text = solver.simpPocz.pkt[0].wsp[1].ToString();
             //pictureBoxGraph.Image = new Bitmap(640, 640);
-            /*
+
+            //richTextBox1.Clear();
+            richTextBox1.Text = "Uwaga - punkty simpleksu są sortowane od najmniejszego do największgo po każdej iteracji.\n\n";
             for (int i=0; i<solver.listaSimp.Count; i++)
             {
-                listBox1.Items.Add("Krok " + (i+1));
+                richTextBox1.Text+=("Krok " + i + ":");
                 for(int j=0; j<solver.simpTemp.pkt.Length; j++)
                 {
-                    listBox1.Items.Add("Współrzędne i wartość funkcji w punkcie " + (j+1));
+                    richTextBox1.Text += ("\n\nWspółrzędne w punkcie " + (j+1) + ":\n");
                     for(int k=0; k<solver.n; k++)
-                        listBox1.Items.Add(Math.Round(solver.listaSimp[i].pkt[j].wsp[k],4));
-                    listBox1.Items.Add(Math.Round(solver.listaSimp[i].pkt[j].y, 4));
+                        richTextBox1.Text += (Math.Round(solver.listaSimp[i].pkt[j].wsp[k],4) + ";   ");
+                    richTextBox1.Text += ("\nWartość funkcji w punkcie " + (j+1) + ":");
+                    richTextBox1.Text += "\n" + (Math.Round(solver.listaSimp[i].pkt[j].y, 4));
                 }
-                listBox1.Items.Add("");
+                richTextBox1.Text += ("\n\n\n");
             }
-            */
-
-            graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
-
-            pictureBoxGraph.Image = graph.getGraph(0);
             
-            label8.Text = "Jednostka: " + 40 * scale;
-            Cursor.Current = Cursors.Default;
+            if(solver.n<3)
+            {
+                graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
+
+                pictureBoxGraph.Image = graph.getGraph(0);
+            
+                label8.Text = "Jednostka: " + 40 * scale;
+                Cursor.Current = Cursors.Default;
+            }
         }
 
         private void btPrzybliz_Click(object sender, EventArgs e)
@@ -86,6 +96,7 @@ namespace Optymalizacja
             cSimplexSolver solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), eps);
             solver.simpPocz.sortujS();
             solver.solveSimp();
+            richTextBox1.Clear();
             foreach (var simpleksy in solver.listaSimp)
             {
                 foreach (var punkty in simpleksy.pkt)

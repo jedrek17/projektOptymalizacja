@@ -81,6 +81,16 @@ namespace Optymalizacja
 
 
 
+            public cSimplex(cSimplex simp)
+            {
+                pkt = new cPoint[simp.pkt.Length];
+                for (int i = 0; i < simp.pkt.Length; i++)
+                    pkt[i] = new cPoint(simp.pkt.Length - 1);
+                this.kopiujZeZrodla(simp);
+            }
+
+
+
             public void liczS() //oblicza wartość każdego punktu simpleksu
             {
                 for (int i = 0; i < pkt.Length; i++)
@@ -123,7 +133,7 @@ namespace Optymalizacja
             public int n, krok;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera
             public double epsilon, ekspansja = 2.0, kontrakcja = 0.5, skurczenie = 0.5;  //parametry do ustawienia w konstruktorze
             public cSimplex simpPocz, simpTemp, simpWynik;    //simpleks początkowy, roboczy, wynikowy
-            public List<cSimplex> listaSimp = new List<cSimplex>();
+            public List<cSimplex> listaSimp;
 
             public bool fl_eks, fl_konDoSr, fl_konNaZew, fl_sku;    // <(*)> - znacznik flag do znalezienia błędu
 
@@ -154,16 +164,15 @@ namespace Optymalizacja
                 fl_konNaZew = false;
                 fl_sku = false;             //<(*)>
 
+                listaSimp = new List<cSimplex>();
                 simpPocz.liczS();
             }
 
 
 
-            private void print()
+            public void print()
             {
-                /*cSimplex temp = new cSimplex(n);
-                temp.kopiujZeZrodla(simpTemp);*/
-                listaSimp.Add(simpTemp);
+                listaSimp.Add(new cSimplex(simpTemp));
             }
 
 
@@ -427,9 +436,8 @@ namespace Optymalizacja
             private void createGraph()
             {
 
-                double val;
-
-                    for (int i = 0; i < width; i++)
+                    /*double val;
+                    for (int i = 0; i < width; i++)   //  <<<---próbuję to zrównoleglić co by się szybciej liczyło :)
                     {
                         for (int j = 0; j < height; j++)
                         {
@@ -441,7 +449,31 @@ namespace Optymalizacja
                             bmpBackgroud.SetPixel(i, j, c);
                             //bmpBackgroud.SetPixel(i, j, Color.White);
                         }
-                    }
+                    }*/
+
+                    
+                    Color [,]tab=new Color[width,height];
+                    Parallel.For(0, width, i =>
+                    {
+                        for (int j = 0; j < height; j++)
+                        {
+                            //val = rownanieTestowe((i - (width / 2)) * scale, (j - (height / 2)) * scale);
+                            //val = getValFromExpression((i - (width / 2)) * scale, (j - (height / 2)) * scale);
+                            string expr = "";
+                            expr = sExpression.Replace("x1", Convert.ToString((i - (width / 2)) * scale));
+                            expr = expr.Replace("x2", Convert.ToString((j - (height / 2)) * scale));
+                            expr = expr.Replace(",", ".");
+                            // Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
+                            // Color c2 = Color.White;
+                            Color c = getColor(Evaluate(expr));
+                            tab[i,j] = c;
+                            //bmpBackgroud.SetPixel(i, j, Color.White);
+                        }
+                    });
+                    for (int i = 0; i < width; i++)
+                        for (int j = 0; j < height; j++)
+                            bmpBackgroud.SetPixel(i, j, tab[i,j]);
+
 
 
                 drawAxis();
