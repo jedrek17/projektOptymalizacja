@@ -1,4 +1,4 @@
-﻿using org.mariuszgromada.math.mxparser;
+﻿
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -6,6 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections;
+using System.Windows.Forms;
+using System.Data;
+using System.IO;
+
+
 
 namespace Optymalizacja
 {
@@ -368,24 +373,37 @@ namespace Optymalizacja
         public static double rownanieTestowe(double x1, double x2)
         {
             return Math.Pow(x1 - 4, 2) + Math.Pow(x2 - 2, 2);  //Funkcja ma min w punkcie (24,52)
+
+            //return 2 * Math.Pow(x1, 3) - Math.Pow(x2, 3) + 12 * Math.Pow(x1, 2) + 27 * x2;
         }
+
+        static double Evaluate(string expression)
+        {
+            var loDataTable = new DataTable();
+            var loDataColumn = new DataColumn("Eval", typeof(double), expression);
+            loDataTable.Columns.Add(loDataColumn);
+            loDataTable.Rows.Add(0);
+            return (double)(loDataTable.Rows[0]["Eval"]);
+        } 
 
         public static double getValFromExpression(double x_1, double x_2)
         {
-            Argument x1 = new Argument("x1", x_1);
-            Argument x2 = new Argument("x2", x_2);
+            string expr = "";
+            expr =  sExpression.Replace("x1", x_1.ToString());
+            expr = expr.Replace("x2", x_2.ToString());
+            expr = expr.Replace(",", ".");
 
-            Expression e = new Expression(sExpression,x1,x2);
-            return e.calculate();
+            return Evaluate(expr);
         }
         public static double getValFromExpression(double x_1, double x_2, double x_3)
         {
-            Argument x1 = new Argument("x1", x_1);
-            Argument x2 = new Argument("x2", x_2);
-            Argument x3 = new Argument("x3", x_3);
+            string expr = "";
+            expr = sExpression.Replace("x1", x_1.ToString());
+            expr = expr.Replace("x2", x_2.ToString());
+            expr = expr.Replace("x3", x_3.ToString());
+            expr = expr.Replace(",", ".");
 
-            Expression e = new Expression(sExpression, x1, x2, x3);
-            return e.calculate();
+            return Evaluate(expr);
         }
 
         public class drawGraph
@@ -408,20 +426,23 @@ namespace Optymalizacja
             }
             private void createGraph()
             {
+
                 double val;
-                for (int i = 0; i < width; i++)
-                {
-                    for (int j = 0; j < height; j++)
+
+                    for (int i = 0; i < width; i++)
                     {
-                        val = rownanieTestowe((i - (width/2))*scale, (j - (height/2))*scale);
-//                        val = getValFromExpression((i - (width / 2)) * scale, (j - (height / 2)) * scale, expression);
-                       // Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
-                       // Color c2 = Color.White;
-                        Color c = getColor(val);
-                        bmpBackgroud.SetPixel(i,j,c);
-                        //bmpBackgroud.SetPixel(i, j, Color.White);
+                        for (int j = 0; j < height; j++)
+                        {
+                            //val = rownanieTestowe((i - (width / 2)) * scale, (j - (height / 2)) * scale);
+                            val = getValFromExpression((i - (width / 2)) * scale, (j - (height / 2)) * scale);
+                            // Color c = Color.FromArgb(255, Color.FromArgb(Convert.ToInt32(0xffffff) - (int)val));
+                            // Color c2 = Color.White;
+                            Color c = getColor(val);
+                            bmpBackgroud.SetPixel(i, j, c);
+                            //bmpBackgroud.SetPixel(i, j, Color.White);
+                        }
                     }
-                }
+
 
                 drawAxis();
 
@@ -443,6 +464,7 @@ namespace Optymalizacja
                 int red = 255;
                 int green = 0;
                 int blue = 0;
+                if (value < 0) value = 0;
                 if (value < 0x0000ff)
                 {
                      //red = 255 - value;

@@ -52,7 +52,7 @@
             this.btNextStep = new System.Windows.Forms.Button();
             this.btPreviousStep = new System.Windows.Forms.Button();
             this.pictureBoxGraph = new System.Windows.Forms.PictureBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudInsertSize)).BeginInit();
@@ -136,6 +136,7 @@
             this.groupBox1.TabIndex = 7;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Tymczasowe - jakies okienka <?>";
+            this.groupBox1.Visible = false;
             // 
             // btCalculate
             // 
@@ -153,7 +154,7 @@
             this.tbInsertFunction.Name = "tbInsertFunction";
             this.tbInsertFunction.Size = new System.Drawing.Size(665, 20);
             this.tbInsertFunction.TabIndex = 9;
-            this.tbInsertFunction.Text = "(x1-4)^2 + (x2-2)^2";
+            this.tbInsertFunction.Text = "(x1-4)*(x1-4) + (x2-2)*(x2-2)";
             // 
             // label5
             // 
@@ -213,6 +214,7 @@
             this.tbInsertEpsilon.Name = "tbInsertEpsilon";
             this.tbInsertEpsilon.Size = new System.Drawing.Size(150, 20);
             this.tbInsertEpsilon.TabIndex = 12;
+            this.tbInsertEpsilon.Text = "0,01";
             // 
             // nudInsertSize
             // 
@@ -306,21 +308,20 @@
             this.pictureBoxGraph.TabIndex = 0;
             this.pictureBoxGraph.TabStop = false;
             // 
-            // listBox1
+            // richTextBox1
             // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.HorizontalScrollbar = true;
-            this.listBox1.Location = new System.Drawing.Point(800, 212);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(180, 264);
-            this.listBox1.TabIndex = 13;
+            this.richTextBox1.Location = new System.Drawing.Point(800, 208);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(187, 530);
+            this.richTextBox1.TabIndex = 14;
+            this.richTextBox1.Text = "";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(992, 750);
-            this.Controls.Add(this.listBox1);
+            this.ClientSize = new System.Drawing.Size(992, 824);
+            this.Controls.Add(this.richTextBox1);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
@@ -364,7 +365,7 @@
         private System.Windows.Forms.Button btOddal;
         private System.Windows.Forms.Button btPrzybliz;
         private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.RichTextBox richTextBox1;
     }
 }
 
