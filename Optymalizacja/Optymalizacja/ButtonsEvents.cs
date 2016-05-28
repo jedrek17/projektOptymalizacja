@@ -25,7 +25,7 @@ namespace Optymalizacja
             sExpression = tbInsertFunction.Text;
             richTextBox1.Text += "2\n";
             //label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
-            cSimplexSolver solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), 0.01);
+            cSimplexSolver solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), 0.01,2);
             textBox1.Text = solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
             textBox2.Text = solver.simpPocz.pkt[1].wsp[0] + ";   " + solver.simpPocz.pkt[1].wsp[1];
             //label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
@@ -40,7 +40,7 @@ namespace Optymalizacja
             //pictureBoxGraph.Image = new Bitmap(640, 640);
 
             //richTextBox1.Clear();
-            richTextBox1.Text = "Uwaga - punkty simpleksu są sortowane od najmniejszego do największgo po każdej iteracji.\n\n";
+            /*richTextBox1.Text = "Uwaga - punkty simpleksu są sortowane od najmniejszego do największgo po każdej iteracji.\n\n";
             for (int i=0; i<solver.listaSimp.Count; i++)
             {
                 richTextBox1.Text+=("Krok " + i + ":");
@@ -53,9 +53,9 @@ namespace Optymalizacja
                     richTextBox1.Text += "\n" + (Math.Round(solver.listaSimp[i].pkt[j].y, 4));
                 }
                 richTextBox1.Text += ("\n\n\n");
-            }
+            }*/
             
-            if(solver.n<3)
+            /*if(solver.n<3)
             {
                 graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
 
@@ -63,7 +63,7 @@ namespace Optymalizacja
             
                 label8.Text = "Jednostka: " + 40 * scale;
                 Cursor.Current = Cursors.Default;
-            }
+            }*/
         }
 
         private void btPrzybliz_Click(object sender, EventArgs e)
