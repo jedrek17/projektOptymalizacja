@@ -130,18 +130,29 @@ namespace Optymalizacja
 
         class cSimplexSolver
         {
-            public int n, krok;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera
+            public int n, krok, l;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera, l - max kroków
             public double epsilon, ekspansja = 2.1, kontrakcja = 0.5, skurczenie = 0.5;  //parametry do ustawienia w konstruktorze
-            public cSimplex simpPocz, simpTemp, simpWynik;    //simpleks początkowy, roboczy, wynikowy
+            public cSimplex simpPocz, simpTemp;    //simpleks początkowy, roboczy
             public List<cSimplex> listaSimp;
+            public bool minZnaleziony;
+            public double []xmin = new double[3];
+            public double []xmax = new double[3];
 
             public bool fl_eks, fl_konDoSr, fl_konNaZew, fl_sku;    // <(*)> - znacznik flag do znalezienia błędu
 
-            public cSimplexSolver(int n, double epsilon, double ekspansja = 2.1, double kontrakcja = 0.5, double skurczenie = 0.5)   //n - ilość wymiarów funkcji, epsilon - warunek stopu
+            public cSimplexSolver(int n, double epsilon, int l, double x1min, double x2min, double x3min, double x1max, double x2max, double x3max, double ekspansja = 2.1, double kontrakcja = 0.5, double skurczenie = 0.5)   //n - ilość wymiarów funkcji, epsilon - warunek stopu
             {
                 this.n = n;
                 this.epsilon = epsilon;
+                this.l = l;
                 krok = 0;
+
+                xmin[0] = x1min;
+                xmin[1] = x2min;
+                xmin[2] = x3min;
+                xmax[0] = x1max;
+                xmax[1] = x2max;
+                xmax[2] = x3max;
 
                 if (ekspansja > 1.0)   //poniższe parametry muszą przyjmować wartości z odpowiednich zakresów (http://akson.sgh.waw.pl/~jd37272/MO/mo_zaj3.pdf)
                     this.ekspansja = ekspansja;
@@ -152,18 +163,18 @@ namespace Optymalizacja
 
                 simpPocz = new cSimplex(n + 1);   //simpleks składa się zawsze z 1 punktu więcej niż rozmiar zadania
                 simpTemp = new cSimplex(n + 1);
-                simpWynik = new cSimplex(n + 1);
 
                 Random rand = new Random();
-                for (int i = 0; i <(n+1); i++) //pętle losują każdą współrzędną dla każdego punktu
+                for (int i = 0; i < (n + 1); i++) //pętle losują każdą współrzędną dla każdego punktu
                     for (int j = 0; j < n; j++)
-                        simpPocz.pkt[i].wsp[j] = rand.Next(-100, 100) / 10.0;   //z zakresu -10:10
+                        simpPocz.pkt[i].wsp[j] = rand.NextDouble()*(xmax[j]-xmin[j])+xmin[j];
 
                 fl_eks = false;
                 fl_konDoSr = false;
                 fl_konNaZew = false;
                 fl_sku = false;             //<(*)>
 
+                minZnaleziony = false;
                 listaSimp = new List<cSimplex>();
                 simpPocz.liczS();
             }
@@ -322,7 +333,7 @@ namespace Optymalizacja
                 simpTemp.liczS();
                 simpTemp.sortujS();
                 print();
-                while(!stopSpelniony(simpTemp) && krok<300)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
+                while(!stopSpelniony(simpTemp) && krok<l)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
                 {
                     pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punktu
 
@@ -373,6 +384,8 @@ namespace Optymalizacja
                     print();
                     krok++;
                 }
+                if (krok < l)
+                    minZnaleziony = true;
             }
         }
 
