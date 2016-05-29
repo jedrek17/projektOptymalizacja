@@ -93,9 +93,10 @@ namespace Optymalizacja
             //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber += 1;
             btPreviousStep.Enabled = true;
+            label10.Text = "Krok: "+stepNumber;
             if (stepNumber == lastStepNumber)
             {
-                btNextStep.Enabled = false;               
+                btNextStep.Enabled = false;    
             }
             pictureBoxGraph.Image = graph.getGraph(stepNumber);
 
@@ -107,6 +108,7 @@ namespace Optymalizacja
             //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber -= 1;
             btNextStep.Enabled = true;
+            label10.Text = "Krok: " + stepNumber;
             if (stepNumber == 0)
             { 
                 btPreviousStep.Enabled = false;
