@@ -62,6 +62,8 @@ namespace Optymalizacja
                         richTextBox1.Text += (Math.Round(solver.listaSimp[i].pkt[j].wsp[k],4) + ";   ");
                     richTextBox1.Text += ("\nWartość funkcji w punkcie " + (j+1) + ":");
                     richTextBox1.Text += "\n" + (Math.Round(solver.listaSimp[i].pkt[j].y, 4));
+                    //Math.Abs(punkt.wsp[i] - simp.pkt[j].wsp[i]
+                  //  richTextBox1.Text += "\nEpsilon: "
                 }
                 richTextBox1.Text += ("\n\n\n");
             }

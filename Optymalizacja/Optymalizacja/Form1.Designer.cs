@@ -181,7 +181,7 @@
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(96, 13);
             this.label5.TabIndex = 10;
-            this.label5.Text = "Wprowadz funkcję";
+            this.label5.Text = "Wprowadź funkcję";
             // 
             // groupBox2
             // 
@@ -366,9 +366,9 @@
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(6, 46);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(85, 13);
+            this.label7.Size = new System.Drawing.Size(82, 13);
             this.label7.TabIndex = 14;
-            this.label7.Text = "Rozmiar zadania";
+            this.label7.Text = "Wymiar zadania";
             // 
             // label6
             // 

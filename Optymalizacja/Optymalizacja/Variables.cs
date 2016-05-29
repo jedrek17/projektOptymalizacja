@@ -577,8 +577,26 @@ namespace Optymalizacja
                 int red = 255;
                 int green = 0;
                 int blue = 0;
-                if (value < 0) value = 0;
-                if (value < 0x0000ff)
+                //if (value < 0) value = 0;
+                if (value < 0)
+                { // (x1*x1 + x2 - 11) * (x1*x1 + x2 - 11) + (x1 + x2*x2 -7)*(x1 + x2*x2 -7)-200   // pierwsza funkcja do testow
+                    // 4*x1*x1 - 2.1*x1*x1*x1*x1 +1/3*x1*x1*x1*x1*x1*x1 + x1*x2 -4*x2*x2 +4*x2*x2*x2*x2  // druga funkcja do testow
+                    if (value > -1000)
+                        red = 255 -36;
+                    else if (value > -4000)
+                        red = 255 - 50;
+                    else if (value > -8000)
+                        red = 255 - 75;
+                    else if (value > -16000)
+                        red = 255 - 100;
+                    else if (value > -35000)
+                        red = 255 - 125;
+                    else if (value > -40000)
+                        red = 255 - 175;
+
+                    else red = 255 - 215;
+                }
+                else if (value < 0x0000ff)
                 {
                      //red = 255 - value;
                     green = 0 + value;
