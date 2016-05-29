@@ -661,7 +661,7 @@ namespace Optymalizacja
             }
             private void drawSimplex(int step)
             {
-                bmpToShow = bmpBackgroud;
+               // bmpToShow = bmpBackgroud;
                 cSimplex simplex = solver.listaSimp[step];
                 foreach (var pkt in simplex.pkt)
                 {
@@ -702,6 +702,7 @@ namespace Optymalizacja
                 }
             }
                 */
+                bmpToShow = new Bitmap(bmpBackgroud);
                 drawSimplex(stepNumber);
                 bmpToShow.RotateFlip(RotateFlipType.RotateNoneFlipY);
                 //bmpToShow.RotateFlip(RotateFlipType.Rotate270FlipNone);
