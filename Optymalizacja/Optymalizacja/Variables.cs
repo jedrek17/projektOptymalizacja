@@ -9,6 +9,7 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
+using org.mariuszgromada.math.mxparser;
 
 
 
@@ -402,11 +403,15 @@ namespace Optymalizacja
 
         static double Evaluate(string expression)
         {
+            Expression e = new Expression(expression);
+            /*
             var loDataTable = new DataTable();
             var loDataColumn = new DataColumn("Eval", typeof(double), expression);
             loDataTable.Columns.Add(loDataColumn);
             loDataTable.Rows.Add(0);
             return (double)(loDataTable.Rows[0]["Eval"]);
+             * */
+            return e.calculate();
         } 
 
         public static double getValFromExpression(double x_1, double x_2)
