@@ -391,7 +391,7 @@
             // 
             this.nudInsertSize.Location = new System.Drawing.Point(108, 44);
             this.nudInsertSize.Maximum = new decimal(new int[] {
-            3,
+            99,
             0,
             0,
             0});

@@ -9,7 +9,7 @@ using System.Collections;
 using System.Windows.Forms;
 using System.Data;
 using System.IO;
-using org.mariuszgromada.math.mxparser;
+using NCalc;
 
 
 
@@ -39,10 +39,12 @@ namespace Optymalizacja
             public void liczP() //oblicza wartość funkcji w punkcie
             {
                 //y = rownanieTestowe(wsp[0], wsp[1]);
-                if(wsp.Length==2)
+                if (wsp.Length == 2)
                     y = getValFromExpression(wsp[0], wsp[1]);
-                else
+                else if (wsp.Length == 3)
                     y = getValFromExpression(wsp[0], wsp[1], wsp[2]);
+                else
+                    y = getValFromExpression(wsp);
             }
 
 
@@ -137,8 +139,8 @@ namespace Optymalizacja
             public cSimplex simpPocz, simpTemp;    //simpleks początkowy, roboczy
             public List<cSimplex> listaSimp;
             public bool minZnaleziony;
-            public double []xmin = new double[3];
-            public double []xmax = new double[3];
+            public double []xmin;// = new double[3];
+            public double []xmax;// = new double[3];
 
             public bool fl_eks, fl_konDoSr, fl_konNaZew, fl_sku;    // <(*)> - znacznik flag do znalezienia błędu
 
@@ -147,6 +149,8 @@ namespace Optymalizacja
                 this.n = n;
                 this.epsilon = epsilon;
                 this.l = l;
+                xmin = new double[n+1];
+                xmax = new double[n+1];
                 krok = 0;
 
                 xmin[0] = x1min;
@@ -155,9 +159,14 @@ namespace Optymalizacja
                 xmax[0] = x1max;
                 xmax[1] = x2max;
                 xmax[2] = x3max;
+                for (int i = 3; i < n; i++)
+                {
+                    xmin[i] = -10; // wartosci domyslne
+                    xmax[i] = 10; 
+                }
 
                 if (ekspansja > 1.0)   //poniższe parametry muszą przyjmować wartości z odpowiednich zakresów (http://akson.sgh.waw.pl/~jd37272/MO/mo_zaj3.pdf)
-                    this.ekspansja = ekspansja;
+                        this.ekspansja = ekspansja;
                 if (kontrakcja > 0 && kontrakcja < 1)
                     this.kontrakcja = kontrakcja;
                 if (skurczenie > 0 && skurczenie < 1)
@@ -403,35 +412,86 @@ namespace Optymalizacja
 
         static double Evaluate(string expression)
         {
-            Expression e = new Expression(expression);
-            /*
-            var loDataTable = new DataTable();
-            var loDataColumn = new DataColumn("Eval", typeof(double), expression);
-            loDataTable.Columns.Add(loDataColumn);
-            loDataTable.Rows.Add(0);
-            return (double)(loDataTable.Rows[0]["Eval"]);
-             * */
-            return e.calculate();
-        } 
+            double ret;
+           // Expression e = new Expression(expression);
+            try
+            {
+                var loDataTable = new DataTable();
+                var loDataColumn = new DataColumn("Eval", typeof(double), expression);
+                loDataTable.Columns.Add(loDataColumn);
+                loDataTable.Rows.Add(0);
+                ret = (double)(loDataTable.Rows[0]["Eval"]);
+            }
+            catch (Exception e)
+            {
+                
+                ret = Double.MaxValue;
+            }
+            return ret;
+             
+           // return e.calculate();
+        }
+
+        private static double Parser(string expr)
+        {
+            double ret = 0;
+            int indK = 0; // indeks koncowego nawiasu
+            int indS = 0; // indeks srednika
+            int ind = expr.IndexOf("Sqrt");
+            double liczba;
+            if (ind != -1)
+            {
+                indK = expr.IndexOf("]", ind);
+                string exprN = expr.Substring(ind + 5, indK - ind - 5);
+                double wyrazenie = Parser(exprN);
+                double wynik = Math.Sqrt(wyrazenie);
+                expr = expr.Replace("Sqrt[" + exprN + "]", wynik.ToString());
+            }
+
+            if (ind == -1)
+            {
+               ret = Evaluate(expr);
+               return ret;
+            }
+            ret = Evaluate(expr);
+            MessageBox.Show(ind.ToString());
+            return ret;
+        }
 
         public static double getValFromExpression(double x_1, double x_2)
         {
-            string expr = "";
-            expr =  sExpression.Replace("x1", x_1.ToString());
-            expr = expr.Replace("x2", x_2.ToString());
-            expr = expr.Replace(",", ".");
-
-            return Evaluate(expr);
+                string expr = "";
+                expr = sExpression.Replace("x1", x_1.ToString().Replace(",", "."));
+                expr = expr.Replace("x2", x_2.ToString().Replace(",", "."));
+                Expression e = new Expression(expr);
+                object ret = e.Evaluate();
+            return double.Parse(ret.ToString());
         }
         public static double getValFromExpression(double x_1, double x_2, double x_3)
         {
             string expr = "";
-            expr = sExpression.Replace("x1", x_1.ToString());
-            expr = expr.Replace("x2", x_2.ToString());
-            expr = expr.Replace("x3", x_3.ToString());
-            expr = expr.Replace(",", ".");
+            expr = sExpression.Replace("x1", x_1.ToString().Replace(",", "."));
+            expr = expr.Replace("x2", x_2.ToString().Replace(",", "."));
+            expr = expr.Replace("x3", x_3.ToString().Replace(",", "."));
+            Expression e = new Expression(expr);
+            object ret = e.Evaluate();
+            return double.Parse(ret.ToString());
+        }
 
-            return Evaluate(expr);
+        public static double getValFromExpression(double[] x)
+        {
+            string expr = "";
+            expr = sExpression;
+            string xT;
+            for (int i = 0; i < x.Length; i++)
+            {
+                xT = "x" + (i + 1).ToString();
+                expr = expr.Replace(xT, x[i].ToString().Replace(",", "."));
+            }
+
+            Expression e = new Expression(expr);
+            object ret = e.Evaluate();
+            return double.Parse(ret.ToString());
         }
 
         public class drawGraph
