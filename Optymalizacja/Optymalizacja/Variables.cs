@@ -19,10 +19,11 @@ namespace Optymalizacja
         // tutaj bedziemy umieszczac roznego rodzaju zmienne wykorzystywane w programie 
         double scale = 0.05; // skala wyswitlanego wykresu
         int stepNumber = 0;
+        int lastStepNumber = 0;
         public static string sExpression = "";
 
         //cPoint-------------------------------------------------------------------------------------
-        class cPoint
+        public class cPoint
         {
             public double[] wsp;    //współrzędne
             public double y;    //wartość funkcji w punkcie
@@ -68,7 +69,7 @@ namespace Optymalizacja
 
         //cSimplex-------------------------------------------------------------------------------------
 
-        class cSimplex
+        public class cSimplex
         {
             public cPoint[] pkt;
 
@@ -128,7 +129,7 @@ namespace Optymalizacja
 
         //cSimplexSolver-------------------------------------------------------------------------------------
 
-        class cSimplexSolver
+        public class cSimplexSolver
         {
             public int n, krok, l;          //n-wymiarowa funkcja, krok - liczy ilość iteracji solvera, l - max kroków
             public double epsilon, ekspansja = 2.1, kontrakcja = 0.5, skurczenie = 0.5;  //parametry do ustawienia w konstruktorze
@@ -432,12 +433,13 @@ namespace Optymalizacja
         {
             Bitmap bmpBackgroud;
             Bitmap bmpToShow;
+            private cSimplexSolver solver;
             double scale;
             int width;
             int height;
             string expression;
 
-            public drawGraph(int _width, int _height, double _scale, string _exporession)
+            public drawGraph(int _width, int _height, double _scale, string _exporession, cSimplexSolver _solver)
             {
                 width = _width;
                 height = _height;
@@ -445,6 +447,7 @@ namespace Optymalizacja
                 scale = _scale;
                 createGraph();
                 expression = _exporession;
+                solver = _solver;
             }
             private void createGraph()
             {
@@ -573,10 +576,52 @@ namespace Optymalizacja
 
                 }
             }
-
+            private void drawSimplex(int step)
+            {
+                bmpToShow = bmpBackgroud;
+                cSimplex simplex = solver.listaSimp[step];
+                foreach (var pkt in simplex.pkt)
+                {
+                    double x = pkt.wsp[0] / (scale);
+                    double y = pkt.wsp[1] / (scale);
+                    int h = height / 2 + (int)y;
+                    int w = width / 2 + (int)x;
+                    if (h > 1 && h < height - 1 && w > 1 && w < width - 1)
+                    {
+                        //     rysujemy punkt, jesli miesci sie on na obrazku
+                        bmpToShow.SetPixel(w, h-1, Color.Black);
+                        bmpToShow.SetPixel(w, h, Color.Black);
+                        bmpToShow.SetPixel(w, h+1, Color.Black);
+                        bmpToShow.SetPixel(w-1, h, Color.Black);
+                        bmpToShow.SetPixel(w, h, Color.Black);
+                        bmpToShow.SetPixel(w+1, h, Color.Black);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Jeden z punktów nie zmieścił się na wykresie");
+                    }
+                    
+                }
+            }
             public Bitmap getGraph(int stepNumber)
             {
-                bmpToShow.RotateFlip(RotateFlipType.Rotate270FlipNone);
+                /*
+                 * foreach (var simpleksy in solver.listaSimp)
+            {
+                foreach (var punkty in simpleksy.pkt)
+                {
+                    richTextBox1.Text += "wspolrzedne: ";
+                    foreach (var wsp in punkty.wsp)
+                    {
+                        richTextBox1.Text += wsp + " ";
+                    }
+                    richTextBox1.Text += "wartość w punkcie "+punkty.y+"\n";
+                }
+            }
+                */
+                drawSimplex(stepNumber);
+                bmpToShow.RotateFlip(RotateFlipType.RotateNoneFlipY);
+                //bmpToShow.RotateFlip(RotateFlipType.Rotate270FlipNone);
                 return bmpToShow;
             }
         }

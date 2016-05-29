@@ -17,6 +17,7 @@ namespace Optymalizacja
     {
         //funkcje związane z obsługą zdarzeń
         drawGraph graph;
+        cSimplexSolver solver;
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -25,12 +26,22 @@ namespace Optymalizacja
             sExpression = tbInsertFunction.Text;
             richTextBox1.Text += "2\n";
             //label1.Text = rownanieTestowe(Convert.ToDouble(textBox1.Text), Convert.ToDouble(textBox2.Text)).ToString();
-            cSimplexSolver solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), 0.01,60, -10, -10, -10, 10, 10, 10);
+            double epsilon = Double.Parse(tbInsertEpsilon.Text);
+            int krokow = Decimal.ToInt32(numericUpDown1.Value);
+            int x1min = Convert.ToInt32(tbP1x.Text);
+            int x2min = Convert.ToInt32(textBox4.Text);
+            int x3min = Convert.ToInt32(textBox6.Text);
+            int x1max = Convert.ToInt32(tbP1x2.Text);
+            int x2max = Convert.ToInt32(textBox3.Text);
+            int x3max = Convert.ToInt32(textBox5.Text);
+            solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), epsilon, krokow, x1min, x2min, x3min, x1max, x2max, x3max);
             textBox1.Text = solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
             textBox2.Text = solver.simpPocz.pkt[1].wsp[0] + ";   " + solver.simpPocz.pkt[1].wsp[1];
             //label1.Text = solver.simpPocz.pkt[0].y.ToString() + ";   " + solver.simpPocz.pkt[0].wsp[0] + ";   " + solver.simpPocz.pkt[0].wsp[1];
             solver.simpPocz.sortujS();
-            solver.solveSimp();
+            solver.solveSimp(); 
+            lastStepNumber = solver.listaSimp.Count - 1; // wprowadzamy wartosc oznaczajaca, ile krokow wykonal nasz algorytm
+            stepNumber = 0; // wprowadzamy zmienna okreslajaca, ktory aktualnie krok wyswietlamy
             label1.Text ="Flagi(e,kS,kZ,s): " + solver.fl_eks + solver.fl_konDoSr + solver.fl_konNaZew + solver.fl_sku;// <(*)>
             label2.Text = "Wykonano " + solver.krok + " kroków";
             label3.Text = "Znaleziono min: " + solver.minZnaleziony;
@@ -57,20 +68,51 @@ namespace Optymalizacja
             
             if(solver.n<3)
             {
-                graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
+                graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
 
-                pictureBoxGraph.Image = graph.getGraph(0);
+                pictureBoxGraph.Image = graph.getGraph(stepNumber);
             
                 label8.Text = "Jednostka: " + 40 * scale;
-                Cursor.Current = Cursors.Default;
+                btNextStep.Enabled = true;
+                btPrzybliz.Enabled = true;
+                btOddal.Enabled = true;
             }
+            Cursor.Current = Cursors.Default;
         }
 
+        private void btNextStep_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
+            stepNumber += 1;
+            btPreviousStep.Enabled = true;
+            if (stepNumber == lastStepNumber)
+            {
+                btNextStep.Enabled = false;               
+            }
+            pictureBoxGraph.Image = graph.getGraph(stepNumber);
+
+            Cursor.Current = Cursors.Default;
+        }
+        private void btPreviousStep_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
+            stepNumber -= 1;
+            btNextStep.Enabled = true;
+            if (stepNumber == 0)
+            { 
+                btPreviousStep.Enabled = false;
+            }
+            pictureBoxGraph.Image = graph.getGraph(stepNumber);
+
+            Cursor.Current = Cursors.Default;
+        }
         private void btPrzybliz_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
             scale = scale - 0.01;
-            graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
+            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             pictureBoxGraph.Image = graph.getGraph(stepNumber);
             label8.Text = "Jednostka: " + 40 * scale;
             Cursor.Current = Cursors.Default;
@@ -79,7 +121,7 @@ namespace Optymalizacja
         {
             Cursor.Current = Cursors.WaitCursor;
             scale += 0.01;
-            graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
+            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             pictureBoxGraph.Image = graph.getGraph(stepNumber);
             label8.Text = "Jednostka: " + 40 * scale;
             Cursor.Current = Cursors.Default;
@@ -93,7 +135,7 @@ namespace Optymalizacja
             sExpression = tbInsertFunction.Text;
 
             double eps = double.Parse(tbInsertEpsilon.Text.Replace(".",","));
-            cSimplexSolver solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), eps, 60, -10, -10, -10, 10, 10, 10);
+            solver = new cSimplexSolver(Decimal.ToInt16(nudInsertSize.Value), eps, 60, -10, -10, -10, 10, 10, 10);
             solver.simpPocz.sortujS();
             solver.solveSimp();
             richTextBox1.Clear();
@@ -113,7 +155,7 @@ namespace Optymalizacja
             if (nudInsertSize.Value == 2)
             {
                 //label9.Text = getValFromExpression(5, 2).ToString();
-                graph = new drawGraph(640, 640, scale, tbInsertFunction.Text);
+                graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
                 pictureBoxGraph.Image = graph.getGraph(0);
             }
              /*
@@ -124,6 +166,28 @@ namespace Optymalizacja
              */
             Cursor.Current = Cursors.Default;
         }
+
+        private void nudInsertSize_ValueChanged(object sender, EventArgs e)
+        {
+            switch (Decimal.ToInt32(nudInsertSize.Value))
+            {
+                case 2:
+                    textBox5.Visible = false;
+                    textBox5.Text = "10";
+                    textBox6.Visible = false;
+                    textBox6.Text = "-10";
+                    label15.Visible = false;
+                    label16.Visible = false;
+                    break;
+                case 3:
+                    textBox5.Visible = true;
+                    textBox6.Visible = true;
+                    label15.Visible = true;
+                    label16.Visible = true;
+                    break;
+            }
+        }
+
 
     }
 
