@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,22 +58,30 @@ namespace Optymalizacja
             //pictureBoxGraph.Image = new Bitmap(640, 640);
 
             richTextBox1.Text = "Uwaga - punkty simpleksu są sortowane od najmniejszego do największgo po każdej iteracji.\n\n";
-            for (int i=0; i<solver.listaSimp.Count; i++)
+            using (StreamWriter sw = File.CreateText("wyniki.csv")) // pisanie wynikow do pliku
             {
-                richTextBox1.Text+=("Krok " + i + ":");
-                for(int j=0; j<solver.simpTemp.pkt.Length; j++)
+                for (int i = 0; i < solver.listaSimp.Count; i++)
                 {
-                    richTextBox1.Text += ("\n\nWspółrzędne w punkcie " + (j+1) + ":\n");
-                    for(int k=0; k<solver.n; k++)
-                        richTextBox1.Text += (Math.Round(solver.listaSimp[i].pkt[j].wsp[k],4) + ";   ");
-                    richTextBox1.Text += ("\nWartość funkcji w punkcie " + (j+1) + ":");
-                    richTextBox1.Text += "\n" + (Math.Round(solver.listaSimp[i].pkt[j].y, 4));
-                    //Math.Abs(punkt.wsp[i] - simp.pkt[j].wsp[i]
-                  //  richTextBox1.Text += "\nEpsilon: "
+                    richTextBox1.Text += ("Krok " + i + ":");
+                    sw.Write(i.ToString() + "; ");
+                    for (int j = 0; j < solver.simpTemp.pkt.Length; j++)
+                    {
+                        richTextBox1.Text += ("\n\nWspółrzędne w punkcie " + (j + 1) + ":\n");
+                        for (int k = 0; k < solver.n; k++)
+                        {
+                            richTextBox1.Text += (Math.Round(solver.listaSimp[i].pkt[j].wsp[k], 4) + ";   ");
+                            sw.Write(Math.Round(solver.listaSimp[i].pkt[j].wsp[k], 4) + "; ");
+                        }
+                        richTextBox1.Text += ("\nWartość funkcji w punkcie " + (j + 1) + ":");
+                        richTextBox1.Text += "\n" + (Math.Round(solver.listaSimp[i].pkt[j].y, 4));
+                        sw.Write(Math.Round(solver.listaSimp[i].pkt[j].y, 4) +"; ");
+                        //Math.Abs(punkt.wsp[i] - simp.pkt[j].wsp[i]
+                        //  richTextBox1.Text += "\nEpsilon: "
+                    }
+                    richTextBox1.Text += ("\n\n\n");
+                    sw.Write("\n");
                 }
-                richTextBox1.Text += ("\n\n\n");
             }
-            
             if(solver.n<3)
             {
                 graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
@@ -83,6 +92,8 @@ namespace Optymalizacja
                 btNextStep.Enabled = true;
                 btPrzybliz.Enabled = true;
                 btOddal.Enabled = true;
+                btPreviousStep.Enabled = false;
+                label10.Text = "Krok: 0";
             }
             Cursor.Current = Cursors.Default;
         }

@@ -580,7 +580,8 @@ namespace Optymalizacja
                 //if (value < 0) value = 0;
                 if (value < 0)
                 { // (x1*x1 + x2 - 11) * (x1*x1 + x2 - 11) + (x1 + x2*x2 -7)*(x1 + x2*x2 -7)-200   // pierwsza funkcja do testow
-                    // 4*x1*x1 - 2.1*x1*x1*x1*x1 +1/3*x1*x1*x1*x1*x1*x1 + x1*x2 -4*x2*x2 +4*x2*x2*x2*x2  // druga funkcja do testow
+                    //100*(x2-x1*x1)*(x2-x1*x1) + (1-x1)*(1-x1) // 2ga 
+                    // 4*x1*x1 - 2.1*x1*x1*x1*x1 +1/3*x1*x1*x1*x1*x1*x1 + x1*x2 -4*x2*x2 +4*x2*x2*x2*x2  // 3 funkcja do testow
                     if (value > -1000)
                         red = 255 -36;
                     else if (value > -4000)
