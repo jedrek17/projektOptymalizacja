@@ -42,15 +42,20 @@ namespace Optymalizacja
             solver.solveSimp(); 
             lastStepNumber = solver.listaSimp.Count - 1; // wprowadzamy wartosc oznaczajaca, ile krokow wykonal nasz algorytm
             stepNumber = 0; // wprowadzamy zmienna okreslajaca, ktory aktualnie krok wyswietlamy
-            label1.Text ="Flagi(e,kS,kZ,s): " + solver.fl_eks + solver.fl_konDoSr + solver.fl_konNaZew + solver.fl_sku;// <(*)>
+            //label1.Text ="Flagi(e,kS,kZ,s): " + solver.fl_eks + solver.fl_konDoSr + solver.fl_konNaZew + solver.fl_sku;// <(*)>
             label2.Text = "Wykonano " + solver.krok + " kroków";
-            label3.Text = "Znaleziono min: " + solver.minZnaleziony;
-            label4.Text = "Wynik " + Math.Round(solver.simpTemp.pkt[1].wsp[0],4) + ";   " + Math.Round(solver.simpTemp.pkt[1].wsp[1], 4);
-            //label4.Text = ""+ solver.skurczenie;
-            //label3.Text = solver.simpPocz.pkt[0].wsp[1].ToString();
+            //label3.Text = "Znaleziono min: " + solver.minZnaleziony;
+            if (solver.minZnaleziony)
+            {
+                label4.Text = "Wynik: " + Math.Round(solver.simpTemp.pkt[0].wsp[0], 7) + ";   " + Math.Round(solver.simpTemp.pkt[0].wsp[1], 7);
+                if (solver.n == 3)
+                    label4.Text = label4.Text + ";   " + Math.Round(solver.simpTemp.pkt[0].wsp[2], 7);
+            }
+            else
+                label4.Text = "Minimum nie znaleziono - przekroczono max kroków";
+
             //pictureBoxGraph.Image = new Bitmap(640, 640);
 
-            //richTextBox1.Clear();
             richTextBox1.Text = "Uwaga - punkty simpleksu są sortowane od najmniejszego do największgo po każdej iteracji.\n\n";
             for (int i=0; i<solver.listaSimp.Count; i++)
             {
@@ -85,7 +90,7 @@ namespace Optymalizacja
         private void btNextStep_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
+            //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber += 1;
             btPreviousStep.Enabled = true;
             if (stepNumber == lastStepNumber)
@@ -99,7 +104,7 @@ namespace Optymalizacja
         private void btPreviousStep_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
+            //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber -= 1;
             btNextStep.Enabled = true;
             if (stepNumber == 0)
