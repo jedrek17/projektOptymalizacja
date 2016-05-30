@@ -1,4 +1,7 @@
-﻿
+﻿//Algorytm wykonany według:
+//http://akson.sgh.waw.pl/~jd37272/MO/mo_zaj3.pdf - prawdopodobnie zawiera błędy
+//poprawiony według:
+//http://optymalizacja.w8.pl/simplexNM.html
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -300,8 +303,8 @@ namespace Optymalizacja
             {
                 cPoint srCiez = new cPoint(n);
                 srCiez.kopiujZeZrodla(liczPolepszonySrCiezk(simp));
-                cPoint pktWynikowy = new cPoint(n);
-                pktWynikowy.zerujWspolrzedne();
+                /*cPoint pktWynikowy = new cPoint(n);
+                pktWynikowy.zerujWspolrzedne();*/
                 cSimplex simpWynikowy = new cSimplex(simp.pkt.Length);
 
                 for(int j=0; j<simp.pkt.Length; j++)        //pętla omiatająca kolejne punkty - j
@@ -344,7 +347,7 @@ namespace Optymalizacja
                 simpTemp.liczS();
                 simpTemp.sortujS();
                 print();
-                while(!stopSpelniony(simpTemp) && krok<l)      //  <<<---!!! - docelowo zmienić na prawidłowy warunek stopu
+                while(!stopSpelniony(simpTemp) && krok<l)
                 {
                     pktOdbity.kopiujZeZrodla(odbicieSimpleksu(simpTemp));   //tworzy odbicie najgorszego punktu
 
@@ -363,7 +366,7 @@ namespace Optymalizacja
                     else
                     {
                         bool jest_poprawa = false;
-                        if ((pktOdbity.y < simpTemp.pkt[simpTemp.pkt.Length-1].y) && (pktOdbity.y >= simpTemp.pkt[simpTemp.pkt.Length - 2].y))   //aR<aH
+                        if ((pktOdbity.y < simpTemp.pkt[simpTemp.pkt.Length-1].y))// && (pktOdbity.y >= simpTemp.pkt[simpTemp.pkt.Length - 2].y))   //aR<aH
                         {
                             pktTemp.kopiujZeZrodla(kontrakcjaSimpleksuNaZew(simpTemp, pktOdbity));
                             if (pktTemp.y < simpTemp.pkt[simpTemp.pkt.Length - 1].y)
@@ -383,10 +386,6 @@ namespace Optymalizacja
                         }
                         if (!jest_poprawa)   //jeśli brak poprawy w powyższych dwóch
                         {
-                            /*simpTemp.pkt[simpTemp.pkt.Length - 1].kopiujZeZrodla(pktOdbity);
-                            simpTemp.liczS();
-                            simpTemp.sortujS();*/ //teoretycznie blok tych trzech linii powinien być raczej zakomentowany - skurczenie wykonywane na nienaruszonym od poprzedniej iteracji simpleksie
-
                             simpTemp.kopiujZeZrodla(skurczenieSimpleksu(simpTemp));
                         }
                     }
@@ -477,6 +476,7 @@ namespace Optymalizacja
             object ret = e.Evaluate();
             return double.Parse(ret.ToString());
         }
+
 
         public static double getValFromExpression(double[] x)
         {

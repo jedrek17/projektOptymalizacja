@@ -240,7 +240,7 @@
             this.numericUpDown1.Size = new System.Drawing.Size(120, 20);
             this.numericUpDown1.TabIndex = 16;
             this.numericUpDown1.Value = new decimal(new int[] {
-            60,
+            300,
             0,
             0,
             0});
@@ -396,7 +396,7 @@
             this.tbInsertEpsilon.Name = "tbInsertEpsilon";
             this.tbInsertEpsilon.Size = new System.Drawing.Size(150, 20);
             this.tbInsertEpsilon.TabIndex = 12;
-            this.tbInsertEpsilon.Text = "0,01";
+            this.tbInsertEpsilon.Text = "0,001";
             // 
             // nudInsertSize
             // 

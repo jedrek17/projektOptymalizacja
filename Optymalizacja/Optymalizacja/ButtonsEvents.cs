@@ -1,9 +1,4 @@
-﻿//Algorytm wykonany według:
-//http://akson.sgh.waw.pl/~jd37272/MO/mo_zaj3.pdf - prawdopodobnie zawiera błędy
-//poprawiony według:
-//http://optymalizacja.w8.pl/simplexNM.html
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -51,6 +46,8 @@ namespace Optymalizacja
                 label4.Text = "Wynik: " + Math.Round(solver.simpTemp.pkt[0].wsp[0], 7) + ";   " + Math.Round(solver.simpTemp.pkt[0].wsp[1], 7);
                 if (solver.n == 3)
                     label4.Text = label4.Text + ";   " + Math.Round(solver.simpTemp.pkt[0].wsp[2], 7);
+                else if (solver.n > 3)
+                    label4.Text = "Sprawdź wynik na końcu listy kroków";
             }
             else
                 label4.Text = "Minimum nie znaleziono - przekroczono max kroków";
@@ -104,7 +101,7 @@ namespace Optymalizacja
             //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber += 1;
             btPreviousStep.Enabled = true;
-            label10.Text = "Krok: "+stepNumber;
+            label10.Text = "Kr: "+stepNumber;
             if (stepNumber == lastStepNumber)
             {
                 btNextStep.Enabled = false;    
@@ -119,7 +116,7 @@ namespace Optymalizacja
             //graph = new drawGraph(480, 480, scale, tbInsertFunction.Text, solver);
             stepNumber -= 1;
             btNextStep.Enabled = true;
-            label10.Text = "Krok: " + stepNumber;
+            label10.Text = "Kr: " + stepNumber;
             if (stepNumber == 0)
             { 
                 btPreviousStep.Enabled = false;
